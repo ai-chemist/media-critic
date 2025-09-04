@@ -1,9 +1,10 @@
-import { Controller, Body, Param, Get, Post, Patch, Delete, ParseIntPipe } from '@nestjs/common';
+import {Controller, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query} from '@nestjs/common';
 import { UsersService } from './users.service';
 
 import { User } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FindUserQueryDto } from './dto/find-user-query.dto';
 
 @Controller('users')
 export class UsersController {
@@ -11,8 +12,8 @@ export class UsersController {
 
     // users - 전체 조회 (필터링 X)
     @Get()
-    async findAll() {
-        return await this.users.findAll();
+    async findAll(@Query() query: FindUserQueryDto) {
+        return await this.users.findAll(query);
     }
 
     // users/:id - 하나 조회

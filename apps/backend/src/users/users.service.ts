@@ -2,9 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service'
 import { mapOrmError } from '../common/orm-exception';
 
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FindUserQueryDto } from './dto/find-user-query.dto';
 import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library';
 
 // CRUD 메서드 - Prisma.UserXXXArgs -> 임시 처리 더 좋은 메서드나 방법 있을 시 수정할 것 -> Dto 방식으로 수정
@@ -12,9 +13,30 @@ import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library'
 export class UsersService {
     constructor(private readonly prisma: PrismaService) {}
 
-    // users 전체 조회 메서드
-    async findAll() {
-        return await this.prisma.user.findMany();
+    // users 전체 조회 메서드 -> Query를 통해 조회, 조건 X 일 경우 전체 조회
+    async findAll(query: FindUserQueryDto) {
+        const {
+            skip = 0,
+            take = 20,
+            search,
+            orderBy = 'email',
+            order = 'desc',
+        } = query;
+
+        // undefined 값이 넘어올 경우 조건 없이 전체 조회
+        const where: Prisma.UserWhereInput | undefined = search ? {
+            OR: [
+                { email: { contains: search, mode: 'insensitive' } },
+                { name: { contains: search, mode: 'insensitive' } },
+            ],
+        }: undefined;
+
+        return this.prisma.user.findMany({
+            skip,
+            take,
+            where,
+            orderBy: { [orderBy]: order },
+        });
     }
 
     // user 하나 조회 메서드 - 조건에 맞는 대상 중 첫 데이터 반환
