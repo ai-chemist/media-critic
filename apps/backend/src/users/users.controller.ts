@@ -10,32 +10,32 @@ import { FindUserQueryDto } from './dto/find-user-query.dto';
 export class UsersController {
     constructor(private readonly users: UsersService) {}
 
-    // users - 전체 조회 (필터링 X)
+    // GET: users findAll() - 전체 조회 (전달하는 인수에 따라 조건에 맞게 결과 반환)
     @Get()
     async findAll(@Query() query: FindUserQueryDto) {
         return await this.users.findAll(query);
     }
 
-    // users/:id - 하나 조회
+    // GET: users/:id findOne() - 하나 조회
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: User['id']) {
         // ParseIntPipe - 자동으로 값을 파싱해주는 파이프
         return await this.users.findOne(id);
     }
 
-    // create - 생성
+    // POST: users/ create() - 생성
     @Post()
     async create(@Body() dto: CreateUserDto) {
         return await this.users.create(dto);
     }
 
-    // update - 수정
+    // PATCH: users/:id update() - 수정
     @Patch(':id')
     async update(@Param('id', ParseIntPipe) id: User['id'], @Body() dto: UpdateUserDto) {
         return await this.users.update(id, dto);
     }
 
-    // remove - 삭제 (관례상 delete 대신 remove 사용)
+    // DELETE: users/:id remove() - 삭제 (관례상 delete 대신 remove 사용)
     @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: User['id']) {
         return await this.users.remove(id);
