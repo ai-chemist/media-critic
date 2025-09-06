@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { User } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserQueryDto } from './dto/find-user-query.dto';
+import { FindUserQueryDto } from './dto/find-user.query.dto';
 
 @Controller('users')
 export class UsersController {
