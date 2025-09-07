@@ -3,10 +3,10 @@ import { PrismaService } from '../prisma/prisma.service'
 import { mapOrmError } from '../common/orm-exception';
 
 import { Prisma, User } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserQueryDto } from './dto/find-user.query.dto';
-import { PrismaClientKnownRequestError } from 'generated/prisma/runtime/library';
 
 // CRUD 메서드 - Prisma.UserXXXArgs -> 임시 처리 더 좋은 메서드나 방법 있을 시 수정할 것 -> Dto 방식으로 수정
 @Injectable()
