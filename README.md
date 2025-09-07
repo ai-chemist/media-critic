@@ -26,3 +26,15 @@
 |   09/06   |      Media & UserRating 모델 생성      |  find-media.query.dto 까지 생성  | users/dto 파일 명 리팩터링, find-media.query.dto 파일 생성 및 작성 중 gpt의 도움을 받으려 했으나 무능한 관계로 임시로 type: string 처리 해둠 추후 수정할 것 |
 |   09/07   | Media dto 및 service find 계열 메서드 생성 | create, update, remove 작성 필요 |                     generated/ 경로 제거 후 '@prisma/client' 계열로 통일 - schema.prisma 에서 output 제거                     |
 | 09/07 - 2 |    Media 계열 서비스 컨트롤러 필수 메서드 완성     | create, update, remove 작성 완료 |                                           UserRating 작성 및 추가 기능 추가 필요                                           |
+| 09/07 - 3 |    Rating 계열 서비스, 컨트롤러, dto 작성     | MVP 구조에 필요하다고 생각된 모델 들 구현 완료 |                                            모델 수정 및 테스트, 추가 기능 구현 필요                                             |
+
+---
+
+### 추가 사항
+|                                                 문제                                                  |             해결법             | 상황 |비고|
+|:---------------------------------------------------------------------------------------------------:|:---------------------------:|:--:|:-:|
+|                                      dto가 굳이 필요한가 싶은 부분들이 존재함                                       |       아키텍쳐 관련 자료 찾아보기       | X  ||
+|                     컨트롤러와 서비스 통신에서 dto를 중복으로 import 하는데 이 부분을 하나로 해결할 가능성이 있는가?                     |       코드 작성 및 추후 테스트        | X  ||
+| ratings 관련 부분의 DB 저장명 UserRating과 nestjs 코드에서의 ratings 둘의 이름을 통일해야 하는가? 통일해야 한다면 어떠한 이름이 더 좋은 이름일까? |   github 등에서 여러 코드 구경해보기    | X  ||
+|   ratings 부분의 코드들 중 mediaId와 userId를 체크할 지, 그 전 요청 단계에서 토큰이나 세션 등의 검증을 거치고 ratingId를 바로 호출할 지 여부    |    database 및 보안 관련 학습하기    | X  ||
+|                                    mapOrmError() 메서드가 필요한게 맞을까?                                     | 예외 처리 및 prisma docs 자료 찾아보기 | X  ||

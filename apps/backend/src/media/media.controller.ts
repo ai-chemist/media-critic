@@ -10,7 +10,7 @@ import { FindMediaQueryDto } from './dto/find-media.query.dto';
 export class MediaController {
     constructor(private readonly media: MediaService) {}
 
-    // GET: media findAll() - 전체 조회
+    // GET: media findAll() - 전체 및 조건 조회
     @Get()
     async findAll(@Query() query: FindMediaQueryDto) {
         return await this.media.findAll(query);
@@ -23,7 +23,7 @@ export class MediaController {
         return await this.media.findOne(id);
     }
 
-    // POST: media/ create() - 생성
+    // POST: media create() - 생성
     @Post()
     async create(@Body() dto: CreateMediaDto) {
         return await this.media.create(dto);
