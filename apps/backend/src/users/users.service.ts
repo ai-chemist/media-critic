@@ -50,7 +50,7 @@ export class UsersService {
     async create(dto: CreateUserDto): Promise<User> {
         try {
             return await this.prisma.user.create({ data: dto });
-        } catch (err) {
+        } catch(err) {
             return mapOrmError(err);
         }
     }
@@ -59,7 +59,7 @@ export class UsersService {
     async update(id: User['id'], dto: UpdateUserDto) {
         try {
             return await this.prisma.user.update({ where: { id }, data: dto });
-        } catch (err) {
+        } catch(err) {
             return mapOrmError(err);
         }
     }
@@ -68,7 +68,7 @@ export class UsersService {
     async remove(id: User['id']) {
         try {
             return await this.prisma.user.delete({ where: { id } });
-        } catch (err) {
+        } catch(err) {
             // 일관성을 위해 P2025 오류 NotFound 에러로 치환
             if (err instanceof PrismaClientKnownRequestError && err.code == 'P2025') {
                 throw new NotFoundException('User Record Not found');

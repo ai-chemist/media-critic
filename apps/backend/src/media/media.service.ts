@@ -47,4 +47,34 @@ export class MediaService {
         if (!media) throw new NotFoundException('Media Record Not found');
         return media;
     }
+
+    // media 생성 메서드
+    async create(dto: CreateMediaDto): Promise<Media> {
+        try {
+            return await this.prisma.media.create({ data: dto });
+        } catch(err) {
+            return mapOrmError(err);
+        }
+    }
+
+    // media 수정 메서드
+    async update(id: Media['id'], dto: UpdateMediaDto) {
+        try {
+            return await this.prisma.media.update({ where: { id }, data: dto });
+        } catch(err) {
+            return mapOrmError(err);
+        }
+    }
+
+    // media 삭제 메서드
+    async remove(id: Media['id']) {
+        try {
+            return await this.prisma.media.delete({ where: { id } });
+        } catch(err) {
+            if (err instanceof PrismaClientKnownRequestError && err.code == 'P2025') {
+                throw new NotFoundException('Media Record Not found');
+            }
+            throw err;
+        }
+    }
 }
