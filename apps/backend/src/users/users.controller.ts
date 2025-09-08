@@ -23,11 +23,11 @@ export class UsersController {
         return await this.users.findOne(id);
     }
 
-    // POST: users/ create() - 생성
-    @Post()
-    async create(@Body() dto: CreateUserDto) {
-        return await this.users.create(dto);
-    }
+    // POST: users/ create() - 생성 - 생성 메서드 중복 및 에러로 인해 주석 처리
+    // @Post()
+    // async create(@Body() dto: CreateUserDto) {
+    //     return await this.users.create(dto);
+    // }
 
     // PATCH: users/:id update() - 수정
     @Patch(':id')

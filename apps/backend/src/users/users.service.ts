@@ -46,14 +46,14 @@ export class UsersService {
         return user;
     }
 
-    // user 생성 메서드
-    async create(dto: CreateUserDto): Promise<User> {
-        try {
-            return await this.prisma.user.create({ data: dto });
-        } catch(err) {
-            return mapOrmError(err);
-        }
-    }
+    // user 생성 메서드 - 생성 메서드 중복 및 에러 처리를 위해 주석 처리
+    // async create(dto: CreateUserDto): Promise<User> {
+    //     try {
+    //         return await this.prisma.user.create({ data: dto });
+    //     } catch(err) {
+    //         return mapOrmError(err);
+    //     }
+    // }
 
     // user 수정 메서드
     async update(id: User['id'], dto: UpdateUserDto) {
