@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"Is
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,10 +8,11 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  name         String?
+  passwordHash String // 해싱한 비밀번호 저장
+  createdAt    DateTime @default(now())
 
   // 사용자가 남긴 평점 1 : N
   ratings UserRating[]
