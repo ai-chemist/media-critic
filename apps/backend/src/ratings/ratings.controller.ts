@@ -1,5 +1,6 @@
-import { Controller, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import {Controller, Req, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query, UseGuards} from '@nestjs/common';
 import { RatingsService } from './rating.service';
+import { AuthGuard } from '@nestjs/passport';
 
 import { UserRating } from '@prisma/client';
 import { CreateRatingDto } from './dto/create-rating.dto';
@@ -7,6 +8,7 @@ import { UpdateRatingDto } from './dto/update-rating.dto';
 import { FindRatingQueryDto } from './dto/find-rating.query.dto';
 
 @Controller('ratings')
+@UseGuards(AuthGuard('jwt')) // 컨트롤러 전체를 보호
 export class RatingsController {
     constructor(private readonly ratings: RatingsService) {}
 
@@ -24,8 +26,9 @@ export class RatingsController {
 
     // POST: ratings create() - 생성
     @Post()
-    async create(@Body() dto: CreateRatingDto) {
-        return await this.ratings.create(dto);
+    async create(@Req() req: any, @Body() dto: CreateRatingDto) {
+        const userId = req.user.userId;
+        return await this.ratings.createFromUser(userId, dto);
     }
 
     // PATCH: ratings/:id update() - 수정

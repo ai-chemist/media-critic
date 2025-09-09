@@ -2,8 +2,9 @@ import { IsInt, IsOptional, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateRatingDto {
-    @Type(() => Number) @IsInt() @Min(1)
-    userId: number;
+    // Jwt 및 AuthGuard 사용으로 인하여 userId Dto에서 분리
+    // @Type(() => Number) @IsInt() @Min(1)
+    // userId: number;
 
     @Type(() => Number) @IsInt() @Min(1)
     mediaId: number;

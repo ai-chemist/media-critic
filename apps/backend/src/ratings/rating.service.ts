@@ -46,13 +46,35 @@ export class RatingsService {
     }
 
     // rating 생성 메서드
-    async create(dto: CreateRatingDto): Promise<UserRating> {
+    async createFromUser(userId: number, dto: CreateRatingDto) {
+        const media = await this.prisma.media.findUnique({ where: { id: dto.mediaId } });
+        if (!media) throw new NotFoundException('Media Record Not found');
+
         try {
-            return await this.prisma.userRating.create({ data: dto });
+            return await this.prisma.userRating.create({
+                data: {
+                    userId,
+                    mediaId: dto.mediaId,
+                    score: dto.score,
+                    comment: dto.comment,
+                },
+            });
         } catch(err) {
-            return mapOrmError(err);
+            if (err instanceof PrismaClientKnownRequestError && err.code == 'P2002') {
+                throw new ConflictException('Your Rating already exists');
+            }
+            throw err;
         }
     }
+
+    // rating 생성 메서드 -> createFromUser() 메서드로 대체
+    // async create(dto: CreateRatingDto): Promise<UserRating> {
+    //     try {
+    //         return await this.prisma.userRating.create({ data: dto });
+    //     } catch(err) {
+    //         return mapOrmError(err);
+    //     }
+    // }
 
     // rating 수정 메서드 -> 동작 시에는 userId, mediaId 검증 절차 필요함
     async update(id: UserRating['id'], dto: UpdateRatingDto) {
