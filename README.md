@@ -17,19 +17,20 @@
 ---
 
 #### 진행 내역
-|    날짜     |                 내역                 |                  비고                   |                                                      추가 사항                                                      |
-|:---------:|:----------------------------------:|:-------------------------------------:|:---------------------------------------------------------------------------------------------------------------:|
-|   09/02   |            프로젝트 생성 및 설정            |        nest.js & next.js 사용 예정        |                                             pnpm package manager 사용                                             |
-|   09/03   |           DB 설치 및 스키마 작성           |        PostgreSQL & Prisma 사용         |                                               User 서비스, 컨트롤러 작성 中                                               |
-|   09/04   |     User 관련 메서드 및 dto 작성 및 수정      |       findAll() 관련 dto 추가 및 수정        |                                             User 서비스, 컨트롤러 1차 작성 완료                                             |
-|   09/05   |              코드 주석 수정              |                 주석 수정                 |                                              User 계열 메서드 등의 주석 수정                                               |
-|   09/06   |      Media & UserRating 모델 생성      |      find-media.query.dto 까지 생성       | users/dto 파일 명 리팩터링, find-media.query.dto 파일 생성 및 작성 중 gpt의 도움을 받으려 했으나 무능한 관계로 임시로 type: string 처리 해둠 추후 수정할 것 |
-|   09/07   | Media dto 및 service find 계열 메서드 생성 |     create, update, remove 작성 필요      |                     generated/ 경로 제거 후 '@prisma/client' 계열로 통일 - schema.prisma 에서 output 제거                     |
-| 09/07 - 2 |    Media 계열 서비스 컨트롤러 필수 메서드 완성     |     create, update, remove 작성 완료      |                                           UserRating 작성 및 추가 기능 추가 필요                                           |
-| 09/07 - 3 |    Rating 계열 서비스, 컨트롤러, dto 작성     |     MVP 구조에 필요하다고 생각된 모델 들 구현 완료      |                                            모델 수정 및 테스트, 추가 기능 구현 필요                                             |
-|   09/08   |     schema 수정 - auth 관련 기능 생성      |           추후 OAuth 추가하고 싶음            |                                        인증 관련 추가 사항이나 유의점, 기업 들의 사례 찾아보기                                         |
-| 09/08 - 2 |      auth module 작성 및 테스트 완료       |      user 디렉터리의 create() 제거? 필요성      |                                400 BadRequest가 응답으로 돌아오는 경우가 있음, 데커레이터 정보 찾아볼 것                                 |
-|   09/09   |  Rating 관련 메서드에 jwt AuthGuard 적용   | create, update, delete 에 대하여 전체 적용할 것 ||
+|    날짜     |                 내역                 |                    비고                     |                                                      추가 사항                                                      |
+|:---------:|:----------------------------------:|:-----------------------------------------:|:---------------------------------------------------------------------------------------------------------------:|
+|   09/02   |            프로젝트 생성 및 설정            |          nest.js & next.js 사용 예정          |                                             pnpm package manager 사용                                             |
+|   09/03   |           DB 설치 및 스키마 작성           |          PostgreSQL & Prisma 사용           |                                               User 서비스, 컨트롤러 작성 中                                               |
+|   09/04   |     User 관련 메서드 및 dto 작성 및 수정      |         findAll() 관련 dto 추가 및 수정          |                                             User 서비스, 컨트롤러 1차 작성 완료                                             |
+|   09/05   |              코드 주석 수정              |                   주석 수정                   |                                              User 계열 메서드 등의 주석 수정                                               |
+|   09/06   |      Media & UserRating 모델 생성      |        find-media.query.dto 까지 생성         | users/dto 파일 명 리팩터링, find-media.query.dto 파일 생성 및 작성 중 gpt의 도움을 받으려 했으나 무능한 관계로 임시로 type: string 처리 해둠 추후 수정할 것 |
+|   09/07   | Media dto 및 service find 계열 메서드 생성 |       create, update, remove 작성 필요        |                     generated/ 경로 제거 후 '@prisma/client' 계열로 통일 - schema.prisma 에서 output 제거                     |
+| 09/07 - 2 |    Media 계열 서비스 컨트롤러 필수 메서드 완성     |       create, update, remove 작성 완료        |                                           UserRating 작성 및 추가 기능 추가 필요                                           |
+| 09/07 - 3 |    Rating 계열 서비스, 컨트롤러, dto 작성     |       MVP 구조에 필요하다고 생각된 모델 들 구현 완료        |                                            모델 수정 및 테스트, 추가 기능 구현 필요                                             |
+|   09/08   |     schema 수정 - auth 관련 기능 생성      |             추후 OAuth 추가하고 싶음              |                                        인증 관련 추가 사항이나 유의점, 기업 들의 사례 찾아보기                                         |
+| 09/08 - 2 |      auth module 작성 및 테스트 완료       |        user 디렉터리의 create() 제거? 필요성        |                                400 BadRequest가 응답으로 돌아오는 경우가 있음, 데커레이터 정보 찾아볼 것                                 |
+|   09/09   |  Rating 관련 메서드에 jwt AuthGuard 적용   |   create, update, delete 에 대하여 전체 적용할 것   ||
+| 09/09 - 2 |         Rating 계열 메서드 리팩터링         | @Req() 를 통해 req 객체를 받아와 userId 검증 방식으로 변경 ||
 
 ---
 

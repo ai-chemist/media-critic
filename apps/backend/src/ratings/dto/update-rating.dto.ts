@@ -1,6 +1,12 @@
-import { PartialType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsOptional, IsString, IsInt, Min, Max } from 'class-validator';
 
-import { CreateRatingDto } from './create-rating.dto';
+export class UpdateRatingDto {
+    @IsOptional()
+    @Type(() => Number) @IsInt() @Min(1) @Max(100)
+    score?: number;
 
-// nest swagger 에서 지원하는 PartialType 사용하여 CreateRatingDto 부분 사용
-export class UpdateRatingDto extends PartialType(CreateRatingDto) {}
+    @IsOptional()
+    @IsString()
+    comment?: string;
+}

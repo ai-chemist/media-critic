@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {Injectable, ConflictException, NotFoundException, ForbiddenException} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { mapOrmError } from '../common/orm-exception';
 
@@ -67,14 +67,40 @@ export class RatingsService {
         }
     }
 
+    // rating 수정 메서드 -> authGuard 적용
+    async updateFromUser(userId: number, id: number, dto: UpdateRatingDto) {
+        const rating = await this.prisma.userRating.findUnique({ where: { id } });
+        if (!rating) throw new NotFoundException('Rating Record Not found');
+
+        // TODO: ConflictException || ForbiddenException 두 예외 중 어느 예외를 throw 하는 것이 더 적합한가
+        if (rating.userId !== userId) throw new ForbiddenException('You are not the owner of this rating');
+
+        return this.prisma.userRating.update({
+            where: { id },
+            data: dto,
+        });
+    }
+
+    // rating 삭제 메서드
+    async removeFromUser(userId: number, id: number) {
+        const rating = await this.prisma.userRating.findUnique({ where: { id } });
+        if (!rating) throw new NotFoundException('Rating Not Found');
+
+        // TODO: ConflictException || ForbiddenException 두 예외 중 어느 예외를 throw 하는 것이 더 적합한가
+        if (rating.userId !== userId) throw new ForbiddenException('You are not the owner of this rating');
+
+        return this.prisma.userRating.delete({ where: { id } });
+    }
+
+    /*
     // rating 생성 메서드 -> createFromUser() 메서드로 대체
-    // async create(dto: CreateRatingDto): Promise<UserRating> {
-    //     try {
-    //         return await this.prisma.userRating.create({ data: dto });
-    //     } catch(err) {
-    //         return mapOrmError(err);
-    //     }
-    // }
+    async create(dto: CreateRatingDto): Promise<UserRating> {
+        try {
+            return await this.prisma.userRating.create({ data: dto });
+        } catch(err) {
+            return mapOrmError(err);
+        }
+    }
 
     // rating 수정 메서드 -> 동작 시에는 userId, mediaId 검증 절차 필요함
     async update(id: UserRating['id'], dto: UpdateRatingDto) {
@@ -96,4 +122,5 @@ export class RatingsService {
             throw err;
         }
     }
+     */
 }

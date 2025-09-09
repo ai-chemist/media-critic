@@ -31,15 +31,15 @@ export class RatingsController {
         return await this.ratings.createFromUser(userId, dto);
     }
 
-    // PATCH: ratings/:id update() - 수정
+    // PATCH: ratings/:id update() - 수정 -> updateFromUser() 메서드로 리팩터링
     @Patch(':id')
-    async update(@Param('id', ParseIntPipe) id: UserRating['id'], @Body() dto: UpdateRatingDto) {
-        return await this.ratings.update(id, dto);
+    async update(@Req() req: any, @Param('id', ParseIntPipe) id: UserRating['id'], @Body() dto: UpdateRatingDto) {
+        return await this.ratings.updateFromUser(req.user.userId, id, dto);
     }
 
-    // DELETE: ratings/:id remove() - 삭제
+    // DELETE: ratings/:id remove() - 삭제 -> updateFromUser() 메서드로 리팩터링
     @Delete(':id')
-    async remove(@Param('id', ParseIntPipe) id: UserRating['id']) {
-        return await this.ratings.remove(id);
+    async remove(@Req() req: any, @Param('id', ParseIntPipe) id: UserRating['id']) {
+        return await this.ratings.removeFromUser(req.user.userId, id);
     }
 }
