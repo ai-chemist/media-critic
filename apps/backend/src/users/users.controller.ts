@@ -1,8 +1,8 @@
-import { Controller, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import {Controller, Req, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query, UseGuards} from '@nestjs/common';
 import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
 
 import { User } from '@prisma/client';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserQueryDto } from './dto/find-user.query.dto';
 
@@ -21,6 +21,13 @@ export class UsersController {
     async findOne(@Param('id', ParseIntPipe) id: User['id']) {
         // ParseIntPipe - 자동으로 값을 파싱해주는 파이프
         return await this.users.findOne(id);
+    }
+
+    // GET: users/me findMe() - 인증된 사용자의 본인 정보 조회
+    @Get('me')
+    @UseGuards(AuthGuard('jwt'))
+    async findMe(@Req() req: any) {
+        return await this.users.findMe(req.user.userId);
     }
 
     // POST: users/ create() - 생성 - 생성 메서드 중복 및 에러로 인해 주석 처리

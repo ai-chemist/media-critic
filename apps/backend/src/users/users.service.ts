@@ -46,6 +46,19 @@ export class UsersService {
         return user;
     }
 
+    // user의 본인 정보 조회 메서드
+    async findMe(id: User['id']) {
+        const user = await this.prisma.user.findUnique({
+            where: { id },
+            select: {
+                id: true, email: true, name: true, createdAt: true,
+            }
+        });
+
+        if (!user) throw new NotFoundException('User Record Not found');
+        return user;
+    }
+
     // user 생성 메서드 - 생성 메서드 중복 및 에러 처리를 위해 주석 처리
     // async create(dto: CreateUserDto): Promise<User> {
     //     try {

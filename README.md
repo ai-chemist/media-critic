@@ -31,6 +31,7 @@
 | 09/08 - 2 |      auth module 작성 및 테스트 완료       |        user 디렉터리의 create() 제거? 필요성        |                                400 BadRequest가 응답으로 돌아오는 경우가 있음, 데커레이터 정보 찾아볼 것                                 |
 |   09/09   |  Rating 관련 메서드에 jwt AuthGuard 적용   |   create, update, delete 에 대하여 전체 적용할 것   ||
 | 09/09 - 2 |         Rating 계열 메서드 리팩터링         | @Req() 를 통해 req 객체를 받아와 userId 검증 방식으로 변경 ||
+|   09/10   | User 의 findMe() 메서드 제공 및 jwt 인증 추가 |||
 
 ---
 
