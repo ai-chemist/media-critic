@@ -38,6 +38,9 @@ let MediaController = class MediaController {
     async remove(id) {
         return await this.media.remove(id);
     }
+    async getSummary(id) {
+        return await this.media.getSummary(id);
+    }
 };
 exports.MediaController = MediaController;
 __decorate([
@@ -76,6 +79,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MediaController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Get)(':id/summary'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], MediaController.prototype, "getSummary", null);
 exports.MediaController = MediaController = __decorate([
     (0, common_1.Controller)('media'),
     __metadata("design:paramtypes", [media_service_1.MediaService])

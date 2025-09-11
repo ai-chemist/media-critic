@@ -9,37 +9,45 @@ export declare class RatingsService {
     findAll(query: FindRatingQueryDto): Promise<{
         id: number;
         createdAt: Date;
-        userId: number;
         mediaId: number;
         score: number;
+        userId: number;
         comment: string | null;
         updatedAt: Date;
     }[]>;
     findOne(id: UserRating['id']): Promise<{
         id: number;
         createdAt: Date;
-        userId: number;
         mediaId: number;
         score: number;
+        userId: number;
         comment: string | null;
         updatedAt: Date;
     }>;
-    create(dto: CreateRatingDto): Promise<UserRating>;
-    update(id: UserRating['id'], dto: UpdateRatingDto): Promise<{
+    createFromUser(userId: number, dto: CreateRatingDto): Promise<{
         id: number;
         createdAt: Date;
-        userId: number;
         mediaId: number;
         score: number;
+        userId: number;
         comment: string | null;
         updatedAt: Date;
     }>;
-    remove(id: UserRating['id']): Promise<{
+    updateFromUser(userId: number, id: number, dto: UpdateRatingDto): Promise<{
         id: number;
         createdAt: Date;
-        userId: number;
         mediaId: number;
         score: number;
+        userId: number;
+        comment: string | null;
+        updatedAt: Date;
+    }>;
+    removeFromUser(userId: number, id: number): Promise<{
+        id: number;
+        createdAt: Date;
+        mediaId: number;
+        score: number;
+        userId: number;
         comment: string | null;
         updatedAt: Date;
     }>;

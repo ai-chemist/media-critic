@@ -1,10 +1,11 @@
-import { Controller, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Req, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
 import { MediaService } from './media.service';
 
 import { Media } from '@prisma/client';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
 import { FindMediaQueryDto } from './dto/find-media.query.dto';
+import { OptionalJwtGuard } from '../auth/optional-jwt.guard';
 
 @Controller('media')
 export class MediaController {
@@ -39,5 +40,13 @@ export class MediaController {
     @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: Media['id']) {
         return await this.media.remove(id);
+    }
+
+    // GET: media/:id/summary getSummary() - 지정된 미디어에 대한 평균 평점 반환
+    @Get(':id/summary')
+    @UseGuards(OptionalJwtGuard)
+    async getSummary(@Req() req: any, @Param('id', ParseIntPipe) id: Media['id']) {
+        const userId = req.user?.userId as number | undefined;
+        return await this.media.getSummary(id, userId);
     }
 }

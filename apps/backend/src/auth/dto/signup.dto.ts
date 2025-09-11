@@ -1,7 +1,8 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength } from 'class-validator';
 
 export class SignupDto {
-    @IsEmail()
+    // @IsEmail()
+    @IsString()
     email: string;
 
     // TODO 추후 닉네임을 영어 기준 n자, 한글 기준 m자로 제한하는 기능

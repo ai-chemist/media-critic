@@ -1,4 +1,4 @@
-import {Controller, Req, Body, Param, Get, Post, Patch, Delete, ParseIntPipe, Query, UseGuards} from '@nestjs/common';
+import {Controller, Req, Body, Param, Get, Patch, Delete, ParseIntPipe, Query, UseGuards} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -30,12 +30,6 @@ export class UsersController {
         return await this.users.findMe(req.user.userId);
     }
 
-    // POST: users/ create() - 생성 - 생성 메서드 중복 및 에러로 인해 주석 처리
-    // @Post()
-    // async create(@Body() dto: CreateUserDto) {
-    //     return await this.users.create(dto);
-    // }
-
     // PATCH: users/:id update() - 수정
     @Patch(':id')
     async update(@Param('id', ParseIntPipe) id: User['id'], @Body() dto: UpdateUserDto) {
@@ -47,4 +41,10 @@ export class UsersController {
     async remove(@Param('id', ParseIntPipe) id: User['id']) {
         return await this.users.remove(id);
     }
+
+    // POST: users/ create() - 생성 - 생성 메서드 중복 및 에러로 인해 주석 처리
+    // @Post()
+    // async create(@Body() dto: CreateUserDto) {
+    //     return await this.users.create(dto);
+    // }
 }

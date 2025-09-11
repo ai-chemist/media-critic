@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RatingsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
-const orm_exception_1 = require("../common/orm-exception");
 const library_1 = require("@prisma/client/runtime/library");
 let RatingsService = class RatingsService {
     prisma;
@@ -40,32 +39,45 @@ let RatingsService = class RatingsService {
             throw new common_1.NotFoundException('Rating Record Not found');
         return rating;
     }
-    async create(dto) {
+    async createFromUser(userId, dto) {
+        const media = await this.prisma.media.findUnique({ where: { id: dto.mediaId } });
+        if (!media)
+            throw new common_1.NotFoundException('Media Record Not found');
         try {
-            return await this.prisma.userRating.create({ data: dto });
+            return await this.prisma.userRating.create({
+                data: {
+                    userId,
+                    mediaId: dto.mediaId,
+                    score: dto.score,
+                    comment: dto.comment,
+                },
+            });
         }
         catch (err) {
-            return (0, orm_exception_1.mapOrmError)(err);
-        }
-    }
-    async update(id, dto) {
-        try {
-            return await this.prisma.userRating.update({ where: { id }, data: dto });
-        }
-        catch (err) {
-            return (0, orm_exception_1.mapOrmError)(err);
-        }
-    }
-    async remove(id) {
-        try {
-            return await this.prisma.userRating.delete({ where: { id } });
-        }
-        catch (err) {
-            if (err instanceof library_1.PrismaClientKnownRequestError && err.code == 'P2025') {
-                throw new common_1.NotFoundException('Rating Record Not found');
+            if (err instanceof library_1.PrismaClientKnownRequestError && err.code == 'P2002') {
+                throw new common_1.ConflictException('Your Rating already exists');
             }
             throw err;
         }
+    }
+    async updateFromUser(userId, id, dto) {
+        const rating = await this.prisma.userRating.findUnique({ where: { id } });
+        if (!rating)
+            throw new common_1.NotFoundException('Rating Record Not found');
+        if (rating.userId !== userId)
+            throw new common_1.ForbiddenException('You are not the owner of this rating');
+        return this.prisma.userRating.update({
+            where: { id },
+            data: dto,
+        });
+    }
+    async removeFromUser(userId, id) {
+        const rating = await this.prisma.userRating.findUnique({ where: { id } });
+        if (!rating)
+            throw new common_1.NotFoundException('Rating Not Found');
+        if (rating.userId !== userId)
+            throw new common_1.ForbiddenException('You are not the owner of this rating');
+        return this.prisma.userRating.delete({ where: { id } });
     }
 };
 exports.RatingsService = RatingsService;

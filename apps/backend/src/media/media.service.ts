@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { mapOrmError } from "../common/orm-exception";
 
 import { Prisma, Media } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { PrismaClientKnownRequestError, PrismaPromise } from '@prisma/client/runtime/library';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
 import { FindMediaQueryDto } from './dto/find-media.query.dto';
@@ -77,4 +77,50 @@ export class MediaService {
             throw err;
         }
     }
+
+    // TODO: 데이터 분석 적용 시 전면 수정할 것
+    // User['id'] 사용과 number 사용 중 고민할 것
+    async getSummary(id: Media['id'], userId?: number) {
+        const media = await this.prisma.media.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                title: true,
+                year: true,
+                type: true,
+                createdAt: true,
+            }
+        });
+        if (!media) throw new NotFoundException('Media Record Not found');
+
+        // agg & myRating 두 가지를 트랜잭션으로 묶어야 하는지, 트랜잭션 ACID 특징을 지킬 수 있을 지 고민할 것
+        const agg = await this.prisma.userRating.aggregate({
+            where: { mediaId: id },
+            _avg: { score: true },
+            _count: { _all: true },
+        });
+
+        const myRating = userId ? this.prisma.userRating.findUnique({
+            where: { userId_mediaId: { userId, mediaId: id } },
+            select: { id: true, score: true, comment: true, updatedAt: true },
+        }) : null;
+
+        return {
+            media,
+            rating: {
+                avg: agg._avg.score ?? null,
+                count: agg._count._all,
+                myRating: myRating,
+            },
+        };
+    }
+
+    // 트랜잭션으로 관리 - 선택적 적용 (로그인 시 사용자의 평점 출력)을 위해 함수 확장
+    // const [{ _avg, _count }] = await this.prisma.$transaction([
+    //     this.prisma.userRating.aggregate({
+    //         where: { mediaId: id },
+    //         _avg: { score: true },
+    //         _count: { _all: true },
+    //     }),
+    // ]);
 }

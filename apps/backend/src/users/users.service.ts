@@ -4,7 +4,6 @@ import { mapOrmError } from '../common/orm-exception';
 
 import { Prisma, User } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserQueryDto } from './dto/find-user.query.dto';
 

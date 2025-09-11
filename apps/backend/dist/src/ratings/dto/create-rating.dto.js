@@ -13,18 +13,11 @@ exports.CreateRatingDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class CreateRatingDto {
-    userId;
     mediaId;
     score;
     comment;
 }
 exports.CreateRatingDto = CreateRatingDto;
-__decorate([
-    (0, class_transformer_1.Type)(() => Number),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.Min)(1),
-    __metadata("design:type", Number)
-], CreateRatingDto.prototype, "userId", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => Number),
     (0, class_validator_1.IsInt)(),

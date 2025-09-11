@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RatingsController = void 0;
 const common_1 = require("@nestjs/common");
 const rating_service_1 = require("./rating.service");
+const passport_1 = require("@nestjs/passport");
 const create_rating_dto_1 = require("./dto/create-rating.dto");
 const update_rating_dto_1 = require("./dto/update-rating.dto");
 const find_rating_query_dto_1 = require("./dto/find-rating.query.dto");
@@ -29,14 +30,15 @@ let RatingsController = class RatingsController {
     async findOne(id) {
         return await this.ratings.findOne(id);
     }
-    async create(dto) {
-        return await this.ratings.create(dto);
+    async create(req, dto) {
+        const userId = req.user.userId;
+        return await this.ratings.createFromUser(userId, dto);
     }
-    async update(id, dto) {
-        return await this.ratings.update(id, dto);
+    async update(req, id, dto) {
+        return await this.ratings.updateFromUser(req.user.userId, id, dto);
     }
-    async remove(id) {
-        return await this.ratings.remove(id);
+    async remove(req, id) {
+        return await this.ratings.removeFromUser(req.user.userId, id);
     }
 };
 exports.RatingsController = RatingsController;
@@ -56,28 +58,32 @@ __decorate([
 ], RatingsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_rating_dto_1.CreateRatingDto]),
+    __metadata("design:paramtypes", [Object, create_rating_dto_1.CreateRatingDto]),
     __metadata("design:returntype", Promise)
 ], RatingsController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, update_rating_dto_1.UpdateRatingDto]),
+    __metadata("design:paramtypes", [Object, Object, update_rating_dto_1.UpdateRatingDto]),
     __metadata("design:returntype", Promise)
 ], RatingsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], RatingsController.prototype, "remove", null);
 exports.RatingsController = RatingsController = __decorate([
     (0, common_1.Controller)('ratings'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     __metadata("design:paramtypes", [rating_service_1.RatingsService])
 ], RatingsController);
 //# sourceMappingURL=ratings.controller.js.map

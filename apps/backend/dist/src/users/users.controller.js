@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
+const passport_1 = require("@nestjs/passport");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const find_user_query_dto_1 = require("./dto/find-user.query.dto");
 let UsersController = class UsersController {
@@ -27,6 +28,9 @@ let UsersController = class UsersController {
     }
     async findOne(id) {
         return await this.users.findOne(id);
+    }
+    async findMe(req) {
+        return await this.users.findMe(req.user.userId);
     }
     async update(id, dto) {
         return await this.users.update(id, dto);
@@ -50,6 +54,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('me'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "findMe", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),

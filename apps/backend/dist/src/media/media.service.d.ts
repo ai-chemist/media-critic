@@ -43,4 +43,17 @@ export declare class MediaService {
         externalId: string | null;
         source: string | null;
     }>;
+    getSummary(id: Media['id']): Promise<{
+        media: {
+            type: string;
+            id: number;
+            createdAt: Date;
+            title: string;
+            year: number | null;
+        };
+        rating: {
+            avg: number | null;
+            count: number;
+        };
+    }>;
 }

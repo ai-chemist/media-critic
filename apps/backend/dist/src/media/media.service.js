@@ -67,6 +67,34 @@ let MediaService = class MediaService {
             throw err;
         }
     }
+    async getSummary(id) {
+        const media = await this.prisma.media.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                title: true,
+                year: true,
+                type: true,
+                createdAt: true,
+            }
+        });
+        if (!media)
+            throw new common_1.NotFoundException('Media Record Not found');
+        const [{ _avg, _count }] = await this.prisma.$transaction([
+            this.prisma.userRating.aggregate({
+                where: { mediaId: id },
+                _avg: { score: true },
+                _count: { _all: true },
+            }),
+        ]);
+        return {
+            media,
+            rating: {
+                avg: _avg.score ?? null,
+                count: _count._all,
+            },
+        };
+    }
 };
 exports.MediaService = MediaService;
 exports.MediaService = MediaService = __decorate([
