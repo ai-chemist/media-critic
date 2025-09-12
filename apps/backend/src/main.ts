@@ -1,10 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app: NestExpressApplication = await NestFactory.create(AppModule);
+
+  // 보안 헤더 적용
+  app.use(helmet());
+
+  // CORS
+  app.enableCors({
+      // ?? true - .env에 환경변수가 없을 경우 모든 origin 허용
+      // TODO: 배포 시 true 옵션 반드시 해제할 것
+      origin: process.env.CORS_ORIGIN?.split(',') ?? true,
+      credentials: true,
+      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
+  app.set('trust proxy', 1);
 
   // 전역으로 매개변수 관리를 위한 설정
   app.useGlobalPipes(new ValidationPipe({
