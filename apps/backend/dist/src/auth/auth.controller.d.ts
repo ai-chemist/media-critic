@@ -6,18 +6,18 @@ export declare class AuthController {
     constructor(authService: AuthService);
     signup(dto: SignupDto): Promise<{
         user: {
+            id: number;
             email: string;
             name: string | null;
-            id: number;
         };
         token: string;
     }>;
     login(dto: LoginDto): Promise<{
         user: {
+            id: number;
             email: string;
             name: string | null;
             createdAt: Date;
-            id: number;
         };
         token: string;
     }>;

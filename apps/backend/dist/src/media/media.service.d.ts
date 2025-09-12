@@ -1,5 +1,5 @@
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Media } from '@prisma/client';
+import { Prisma, Media } from '@prisma/client';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
 import { FindMediaQueryDto } from './dto/find-media.query.dto';
@@ -43,7 +43,7 @@ export declare class MediaService {
         externalId: string | null;
         source: string | null;
     }>;
-    getSummary(id: Media['id']): Promise<{
+    getSummary(id: Media['id'], userId?: number): Promise<{
         media: {
             type: string;
             id: number;
@@ -54,6 +54,12 @@ export declare class MediaService {
         rating: {
             avg: number | null;
             count: number;
+            myRating: Prisma.Prisma__UserRatingClient<{
+                id: number;
+                score: number;
+                comment: string | null;
+                updatedAt: Date;
+            } | null, null, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions> | null;
         };
     }>;
 }

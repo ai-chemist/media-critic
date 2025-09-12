@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignupDto = void 0;
 const class_validator_1 = require("class-validator");
+const swagger_1 = require("@nestjs/swagger");
 class SignupDto {
     email;
     username;
@@ -18,7 +19,8 @@ class SignupDto {
 }
 exports.SignupDto = SignupDto;
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsEmail)(),
+    (0, swagger_1.ApiProperty)({ example: 'test@example.com', description: '사용자의 email' }),
     __metadata("design:type", String)
 ], SignupDto.prototype, "email", void 0);
 __decorate([
@@ -26,11 +28,13 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(2),
     (0, class_validator_1.MaxLength)(16),
+    (0, swagger_1.ApiProperty)({ example: 'User', minLength: 2, maxLength: 16, description: '사용자의 활동명, 추후 영문 한글 여부에 따라 글자 수 제한 기능' }),
     __metadata("design:type", String)
 ], SignupDto.prototype, "username", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.MinLength)(8),
+    (0, swagger_1.ApiProperty)({ minLength: 8, description: '사용자의 비밀번호 최소 8자' }),
     __metadata("design:type", String)
 ], SignupDto.prototype, "password", void 0);
 //# sourceMappingURL=signup.dto.js.map

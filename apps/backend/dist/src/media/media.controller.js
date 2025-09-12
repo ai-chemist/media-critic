@@ -18,6 +18,7 @@ const media_service_1 = require("./media.service");
 const create_media_dto_1 = require("./dto/create-media.dto");
 const update_media_dto_1 = require("./dto/update-media.dto");
 const find_media_query_dto_1 = require("./dto/find-media.query.dto");
+const optional_jwt_guard_1 = require("../auth/optional-jwt.guard");
 let MediaController = class MediaController {
     media;
     constructor(media) {
@@ -38,8 +39,9 @@ let MediaController = class MediaController {
     async remove(id) {
         return await this.media.remove(id);
     }
-    async getSummary(id) {
-        return await this.media.getSummary(id);
+    async getSummary(req, id) {
+        const userId = req.user?.userId;
+        return await this.media.getSummary(id, userId);
     }
 };
 exports.MediaController = MediaController;
@@ -81,9 +83,11 @@ __decorate([
 ], MediaController.prototype, "remove", null);
 __decorate([
     (0, common_1.Get)(':id/summary'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    (0, common_1.UseGuards)(optional_jwt_guard_1.OptionalJwtGuard),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], MediaController.prototype, "getSummary", null);
 exports.MediaController = MediaController = __decorate([

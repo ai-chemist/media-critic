@@ -51,7 +51,7 @@ export declare class MediaController {
         externalId: string | null;
         source: string | null;
     }>;
-    getSummary(id: Media['id']): Promise<{
+    getSummary(req: any, id: Media['id']): Promise<{
         media: {
             type: string;
             id: number;
@@ -62,6 +62,12 @@ export declare class MediaController {
         rating: {
             avg: number | null;
             count: number;
+            myRating: import("@prisma/client").Prisma.Prisma__UserRatingClient<{
+                id: number;
+                score: number;
+                comment: string | null;
+                updatedAt: Date;
+            } | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions> | null;
         };
     }>;
 }

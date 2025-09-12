@@ -67,7 +67,7 @@ let MediaService = class MediaService {
             throw err;
         }
     }
-    async getSummary(id) {
+    async getSummary(id, userId) {
         const media = await this.prisma.media.findUnique({
             where: { id },
             select: {
@@ -80,18 +80,21 @@ let MediaService = class MediaService {
         });
         if (!media)
             throw new common_1.NotFoundException('Media Record Not found');
-        const [{ _avg, _count }] = await this.prisma.$transaction([
-            this.prisma.userRating.aggregate({
-                where: { mediaId: id },
-                _avg: { score: true },
-                _count: { _all: true },
-            }),
-        ]);
+        const agg = await this.prisma.userRating.aggregate({
+            where: { mediaId: id },
+            _avg: { score: true },
+            _count: { _all: true },
+        });
+        const myRating = userId ? this.prisma.userRating.findUnique({
+            where: { userId_mediaId: { userId, mediaId: id } },
+            select: { id: true, score: true, comment: true, updatedAt: true },
+        }) : null;
         return {
             media,
             rating: {
-                avg: _avg.score ?? null,
-                count: _count._all,
+                avg: agg._avg.score ?? null,
+                count: agg._count._all,
+                myRating: myRating,
             },
         };
     }
