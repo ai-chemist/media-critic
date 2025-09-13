@@ -1,12 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
+
+  // 요청 본문 크기 제한
+    const limit = process.env.REQUEST_BODY_LIMIT || '1mb';
+    app.use(json({ limit }));
+    app.use(urlencoded({ extended: true, limit }));
 
   // 보안 헤더 적용
   app.use(helmet());
