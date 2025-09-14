@@ -2,7 +2,7 @@ import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { RequestIdMiddleware } from './common/middlewares/request-id.middleware';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
-import {APP_GUARD, APP_INTERCEPTOR} from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -11,6 +11,7 @@ import { MediaModule } from './media/media.module';
 import { RatingsModule } from './ratings/ratings.module';
 import { AuthModule } from './auth/auth.module';
 import { HealthController } from './health.controller';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { HealthController } from './health.controller';
       AppService,
       { provide: APP_GUARD, useClass: ThrottlerGuard }, // 전역 Rate Limit
       { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+      { provide: APP_FILTER, useClass: HttpExceptionFilter },
       ],
 })
 export class AppModule {

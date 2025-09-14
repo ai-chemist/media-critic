@@ -35,9 +35,10 @@
 |   09/10   |     User 의 findMe() 메서드 제공 및 jwt 인증 추가     |                                                      |                                                                                                                 |
 |   09/11   |       Media의 조회 부분에서 Rating 관련 인증 추가       | 사용자 로그인한 상태일 경우 myRating 으로 해당 사용자의 해당 미디어에 대한 평가 출력 |          트랜잭션 관리를 어떻게 해야할지 생각할 것, agg와 myRating 관리 부분에서 myRating에게 null을 주며 동시에 agg와 트랜잭션으로 묶을 수는 없을까?          |                                                
 |   09/12   |      NestSwagger를 이용하여 엔드포인트 명세 자동 생성      |            @ApiProperty() 데커레이터로 추가 정보 작성            |                                     excel 등의 도구 사용보다 편리한 듯, 추가로 오류 여부 확인 필요                                     |
-| 09/12 - 2 |               CORS, 보안 헤더 적용               |                    Helmet 미들웨어 사용                    |
-| 09/12 - 3 |       Rate 제한 및 health Controller 생성       |           n분당 m개의 요청 허용 등의 제한으로 악의적 공격 대비            |
-|   09/13   | RequestIdMiddleware, LoggingInterceptor 작성 |           로깅에 필요한 정보, 요청 id 확인 이유 등등 알아보기            ||
+| 09/12 - 2 |               CORS, 보안 헤더 적용               |                    Helmet 미들웨어 사용                    |                                                                                                                 |
+| 09/12 - 3 |       Rate 제한 및 health Controller 생성       |           n분당 m개의 요청 허용 등의 제한으로 악의적 공격 대비            |                                                                                                                 |
+|   09/13   | RequestIdMiddleware, LoggingInterceptor 작성 |           로깅에 필요한 정보, 요청 id 확인 이유 등등 알아보기            |                                                                                                                 |
+|   09/14   |         Exception Response to Json         |                 모든 에러를 JSON 형식으로 파싱                  |                          기존 orm-exception.ts 파일도 filter 파일에 통합 혹은 리팩터링 가능(?), 가능하다면 진행                          |
 
 ---
 
