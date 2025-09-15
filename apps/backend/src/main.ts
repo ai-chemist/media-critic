@@ -5,6 +5,7 @@ import { json, urlencoded } from 'express';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
+import compression from 'compression';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
@@ -16,6 +17,22 @@ async function bootstrap() {
 
   // 보안 헤더 적용
   app.use(helmet());
+
+  // 응답 압축 - 1024 byte 이상 압축
+  const threshold = Number(process.env.COMPRESSION_THRESHOLD) || 1024;
+
+  app.use(
+    compression({
+      threshold,
+      filter: (req, res) => {
+        // Client 'no-transform' 등 조건이 있는 경우 넘기
+        if (req.headers['x-no-transform'] || res.getHeader('Content-Type')?.toString().includes('image')) {
+          return false;
+        }
+        return compression.filter(req, res);
+      },
+    }),
+  );
 
   // CORS
   app.enableCors({
