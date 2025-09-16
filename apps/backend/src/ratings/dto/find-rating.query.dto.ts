@@ -20,4 +20,7 @@ export class FindRatingQueryDto {
 
     @IsOptional() @IsIn(['asc', 'desc'])
     order?: 'asc' | 'desc';
+
+    @IsOptional() @Type(() => Boolean)
+    withUser?: boolean;
 }

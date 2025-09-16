@@ -14,6 +14,7 @@ model User {
   passwordHash String // 해싱한 비밀번호 저장
   createdAt    DateTime  @default(now())
   deletedAt    DateTime?
+  imageUrl     String?
 
   // 사용자가 남긴 평점 1 : N
   ratings UserRating[]

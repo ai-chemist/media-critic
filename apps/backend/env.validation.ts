@@ -6,8 +6,14 @@ export const EnvSchema = z.object({
 
     DATABASE_URL: z.string().url().or(z.string().startsWith('postgresql://')),
 
-    JWT_SECRET: z.string().min(12, 'JWT must be at least 12 characters'),
-    JWT_EXPIRES_IN: z.string().default('id'),
+    JWT_ACCESS_SECRET: z.string().min(12, 'JWT must be at least 12 characters'),
+    JWT_ACCESS_EXPIRES: z.string().default('30m'),
+
+    JWT_REFRESH_SECRET: z.string().min(12, 'JWT must be at least 12 characters'),
+    JWT_REFRESH_EXPIRES: z.string().default('3d'),
+
+    RATE_TTL: z.number().int().default(60),
+    RATE_LIMIT: z.number().int().default(100),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

@@ -58,3 +58,5 @@
 |                                     Promise.all 자주 보이는 메서드 파해치기                                     ||                                                                  ||
 |               세션, 쿠키를 동시에 사용? 혹은 하나만 사용할 경우 등의 이점은 무엇이며 token 세션이 아닌 다른 세션 관리 방법도 존재?               ||                                                                  ||
 |                                 payload의 사용 이유와 sub 이라는 이름을 사용하는 이유                                 ||||
+|                 /ratings/rating.service.ts -> findAll() -> WHITELIST 부분 더 나은 이름 찾기                  ||||
+|         isFinite() 메서드는 무엇?, prisma를 통해 select 구문을 전달 할 때 mode: 'insentive' 부분이 의미하는 바는 무엇?         ||||
