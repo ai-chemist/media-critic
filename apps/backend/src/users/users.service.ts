@@ -1,91 +1,74 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service'
-import { mapOrmError } from '../common/orm-exception';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateUserSelfDto } from './dto/update-user.self.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
-import { Prisma, User } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserQueryDto } from './dto/find-user.query.dto';
+const SELECT_SELF = {
+    id: true,
+    email: true,
+    username: true,
+    // image_url: true,
+    created_at: true,
+} as const;
 
-// CRUD 메서드 - Prisma.UserXXXArgs -> 임시 처리 더 좋은 메서드나 방법 있을 시 수정할 것 -> Dto 방식으로 수정
 @Injectable()
 export class UsersService {
     constructor(private readonly prisma: PrismaService) {}
 
-    // users 전체 조회 메서드 -> Query를 통해 조회, 조건 X 일 경우 전체 조회
-    async findAll(query: FindUserQueryDto) {
-        const {
-            skip = 0,
-            take = 20,
-            search,
-            orderBy = 'email',
-            order = 'desc',
-        } = query;
-
-        // undefined 값이 넘어올 경우 조건 없이 전체 조회
-        const where: Prisma.UserWhereInput | undefined = search ? {
-            OR: [
-                { email: { contains: search, mode: 'insensitive' } },
-                { name: { contains: search, mode: 'insensitive' } },
-            ],
-        }: undefined;
-
-        return this.prisma.user.findMany({
-            skip,
-            take,
-            where,
-            orderBy: { [orderBy]: order },
-        });
-    }
-
-    // user 하나 조회 메서드 - 조건에 맞는 대상 중 첫 데이터 반환
-    async findOne(id: User['id']) {
-        const user = await this.prisma.user.findFirst({ where: { id } });
-        if (!user) throw new NotFoundException('User Record Not found');
-        return user;
-    }
-
-    // user의 본인 정보 조회 메서드
-    async findMe(id: User['id']) {
+    // 현재 활성 사용자 확인 - schema 내부에 deletedAt 필드 추가하여 삭제 유예기간 및 삭제 처리
+    private async ensureActiveUser(userId: number) {
         const user = await this.prisma.user.findUnique({
-            where: { id },
-            select: {
-                id: true, email: true, name: true, createdAt: true,
-            }
+            where: { id: userId },
+            select: { id: true, deletedAt: true },
         });
-
-        if (!user) throw new NotFoundException('User Record Not found');
-        return user;
+        // User가 삭제될 예정이거나 이미 존재하지 않는 경우
+        if (!user || user.deletedAt) {
+            throw new NotFoundException('User Not found');
+        }
+        return user.id;
     }
 
-    // user 생성 메서드 - 생성 메서드 중복 및 에러 처리를 위해 주석 처리
-    // async create(dto: CreateUserDto): Promise<User> {
-    //     try {
-    //         return await this.prisma.user.create({ data: dto });
-    //     } catch(err) {
-    //         return mapOrmError(err);
-    //     }
+    // 사용자 본인 프로필 조회
+    async getSelf(userId: number) {
+        await this.ensureActiveUser(userId);
+        return this.prisma.user.findUnique({
+            where: { id: userId },
+            select: SELECT_SELF,
+        });
+    }
+
+    // 사용자 본인 프로필 수정
+    async updateSelf(userId: number, dto: UpdateUserSelfDto) {
+        await this.ensureActiveUser(userId);
+        return this.prisma.user.update({
+            where: { id: userId },
+            data: {
+                name: dto.username ?? undefined,
+                // image_url: dto.image_url ?? undefined,
+            },
+            select: SELECT_SELF,
+        });
+    }
+
+    // password 수정
+    async changePassword(userId: number, dto: UpdateUserPasswordDto) {
+        await this.ensureActiveUser(userId);
+
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true, passwordHash: true },
+        });
+        return { ok: true };
+    }
+
+    // Soft Delete User -> TODO: schema에 deletedAt 필드 추가 후 활성화 할 것
+    // async softDeleteUser(userId: number) {
+    //     await this.ensureActiveUser(userId);
+    //     await this.prisma.user.update({
+    //         where: { id: userId },
+    //         data: { deletedAt: new Date() },
+    //     });
+    //     return { ok: true };
     // }
-
-    // user 수정 메서드
-    async update(id: User['id'], dto: UpdateUserDto) {
-        try {
-            return await this.prisma.user.update({ where: { id }, data: dto });
-        } catch(err) {
-            return mapOrmError(err);
-        }
-    }
-
-    // user 삭제 메서드
-    async remove(id: User['id']) {
-        try {
-            return await this.prisma.user.delete({ where: { id } });
-        } catch(err) {
-            // 일관성을 위해 P2025 오류 NotFound 에러로 치환
-            if (err instanceof PrismaClientKnownRequestError && err.code == 'P2025') {
-                throw new NotFoundException('User Record Not found');
-            }
-            throw err;
-        }
-    }
 }
