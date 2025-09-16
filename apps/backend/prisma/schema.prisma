@@ -8,11 +8,12 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
   name         String?
   passwordHash String // 해싱한 비밀번호 저장
-  createdAt    DateTime @default(now())
+  createdAt    DateTime  @default(now())
+  deletedAt    DateTime?
 
   // 사용자가 남긴 평점 1 : N
   ratings UserRating[]

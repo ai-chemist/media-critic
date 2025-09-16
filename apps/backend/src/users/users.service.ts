@@ -63,12 +63,12 @@ export class UsersService {
     }
 
     // Soft Delete User -> TODO: schema에 deletedAt 필드 추가 후 활성화 할 것
-    // async softDeleteUser(userId: number) {
-    //     await this.ensureActiveUser(userId);
-    //     await this.prisma.user.update({
-    //         where: { id: userId },
-    //         data: { deletedAt: new Date() },
-    //     });
-    //     return { ok: true };
-    // }
+    async softDeleteUser(userId: number) {
+        await this.ensureActiveUser(userId);
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: { deletedAt: new Date() },
+        });
+        return { ok: true };
+    }
 }

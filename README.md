@@ -41,7 +41,7 @@
 |   09/14   |         Exception Response to Json         |                         모든 에러를 JSON 형식으로 파싱                         |                          기존 orm-exception.ts 파일도 filter 파일에 통합 혹은 리팩터링 가능(?), 가능하다면 진행                          |
 |   09/15   |          User 관련 부분 Auth 모듈로 리팩터링          |                   AccessToken, RefreshToken 관리 분리                   |                                 Redis 등의 경량 DB를 사용하여 사용자 세션을 따로 관리하는 것이 좋을 것 같음                                 |
 |   09/16   |     UsersController 및 UsersServices 수정     | 생성(회원 가입) 및 로그인 기능 auth 모듈로 분리 후 users 에서는 사용자 개인이 수정하게 될 데이터 등을 담음 |                                         updatePassword, updateProfile 등                                         |
-
+| 09/16 - 2 ||||
 ---
 
 #### 추가 사항
@@ -57,3 +57,4 @@
 |            프로젝트와 직접 연관은 없지만 node.js 계열에서 자주 보이는 webpack 이란 무엇이며 왜 사용하고, 어떠한 대체 수단이 있는가?             ||                                                                  ||
 |                                     Promise.all 자주 보이는 메서드 파해치기                                     ||                                                                  ||
 |               세션, 쿠키를 동시에 사용? 혹은 하나만 사용할 경우 등의 이점은 무엇이며 token 세션이 아닌 다른 세션 관리 방법도 존재?               ||                                                                  ||
+|                                 payload의 사용 이유와 sub 이라는 이름을 사용하는 이유                                 ||||
