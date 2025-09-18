@@ -42,6 +42,8 @@
 |   09/15   |          User 관련 부분 Auth 모듈로 리팩터링          |                   AccessToken, RefreshToken 관리 분리                   |                                 Redis 등의 경량 DB를 사용하여 사용자 세션을 따로 관리하는 것이 좋을 것 같음                                 |
 |   09/16   |     UsersController 및 UsersServices 수정     | 생성(회원 가입) 및 로그인 기능 auth 모듈로 분리 후 users 에서는 사용자 개인이 수정하게 될 데이터 등을 담음 |                                         updatePassword, updateProfile 등                                         |
 |   09/17   |            RatingsController 수정            |                 RatingsService 수정에 따른 Controller 수정                 ||
+|   09/18   |                  Genre 추가                  |                         Media 테이블에 genre 추가                         ||
+
 ---
 
 #### 추가 사항

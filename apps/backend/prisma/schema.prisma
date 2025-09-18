@@ -50,6 +50,7 @@ model Media {
   source     String?
   createdAt  DateTime @default(now())
 
+  genre   String[]
   ratings UserRating[] // Content : Rating - 1 : N
 
   // 동일한 소스에 대한 externalID는 하나만 존재할 것 - 복합 유니크 키 [a, b] 의 조합의 유일성 보장

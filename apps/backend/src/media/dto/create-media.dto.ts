@@ -10,4 +10,7 @@ export class CreateMediaDto {
 
     @IsOptional() @IsInt()
     year?: number;
+
+    @IsString()
+    genre: string[];
 }
