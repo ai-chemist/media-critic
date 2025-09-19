@@ -1,42 +1,26 @@
-import { PrismaService } from '../prisma/prisma.service';
-import { User } from '@prisma/client';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserQueryDto } from './dto/find-user.query.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateUserSelfDto } from './dto/update-user.self.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
-    findAll(query: FindUserQueryDto): Promise<{
+    private ensureActiveUser;
+    getSelf(userId: number): Promise<{
         id: number;
         email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
-    }[]>;
-    findOne(id: User['id']): Promise<{
+        username: never;
+        created_at: never;
+    } | null>;
+    updateSelf(userId: number, dto: UpdateUserSelfDto): Promise<{
         id: number;
         email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
+        username: never;
+        created_at: never;
     }>;
-    findMe(id: User['id']): Promise<{
-        id: number;
-        email: string;
-        name: string | null;
-        createdAt: Date;
+    changePassword(userId: number, dto: UpdateUserPasswordDto): Promise<{
+        ok: boolean;
     }>;
-    update(id: User['id'], dto: UpdateUserDto): Promise<{
-        id: number;
-        email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
-    }>;
-    remove(id: User['id']): Promise<{
-        id: number;
-        email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
+    softDeleteUser(userId: number): Promise<{
+        ok: boolean;
     }>;
 }

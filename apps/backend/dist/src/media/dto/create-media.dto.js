@@ -15,6 +15,7 @@ class CreateMediaDto {
     title;
     type;
     year;
+    genre;
 }
 exports.CreateMediaDto = CreateMediaDto;
 __decorate([
@@ -31,4 +32,8 @@ __decorate([
     (0, class_validator_1.IsInt)(),
     __metadata("design:type", Number)
 ], CreateMediaDto.prototype, "year", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", Array)
+], CreateMediaDto.prototype, "genre", void 0);
 //# sourceMappingURL=create-media.dto.js.map

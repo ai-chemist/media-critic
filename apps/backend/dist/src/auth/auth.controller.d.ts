@@ -18,7 +18,10 @@ export declare class AuthController {
             email: string;
             name: string | null;
             createdAt: Date;
+            deletedAt: Date | null;
+            imageUrl: string | null;
         };
-        token: string;
+        accessToken: string;
+        refreshToken: string;
     }>;
 }

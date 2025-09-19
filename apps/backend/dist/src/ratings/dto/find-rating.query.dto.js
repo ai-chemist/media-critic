@@ -18,6 +18,7 @@ class FindRatingQueryDto {
     search;
     orderBy;
     order;
+    withUser;
 }
 exports.FindRatingQueryDto = FindRatingQueryDto;
 __decorate([
@@ -50,4 +51,9 @@ __decorate([
     (0, class_validator_1.IsIn)(['asc', 'desc']),
     __metadata("design:type", String)
 ], FindRatingQueryDto.prototype, "order", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Type)(() => Boolean),
+    __metadata("design:type", Boolean)
+], FindRatingQueryDto.prototype, "withUser", void 0);
 //# sourceMappingURL=find-rating.query.dto.js.map

@@ -12,6 +12,7 @@ export declare class MediaController {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }[]>;
@@ -21,6 +22,7 @@ export declare class MediaController {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }>;
@@ -30,6 +32,7 @@ export declare class MediaController {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }>;
@@ -39,6 +42,7 @@ export declare class MediaController {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }>;
@@ -48,6 +52,7 @@ export declare class MediaController {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }>;

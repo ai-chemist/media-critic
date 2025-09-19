@@ -1,42 +1,25 @@
 import { UsersService } from './users.service';
-import { User } from '@prisma/client';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserQueryDto } from './dto/find-user.query.dto';
+import { UpdateUserSelfDto } from './dto/update-user.self.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 export declare class UsersController {
     private readonly users;
     constructor(users: UsersService);
-    findAll(query: FindUserQueryDto): Promise<{
+    getMyProfile(req: any): Promise<{
         id: number;
         email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
-    }[]>;
-    findOne(id: User['id']): Promise<{
+        username: never;
+        created_at: never;
+    } | null>;
+    updateMyProfile(req: any, dto: UpdateUserSelfDto): Promise<{
         id: number;
         email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
+        username: never;
+        created_at: never;
     }>;
-    findMe(req: any): Promise<{
-        id: number;
-        email: string;
-        name: string | null;
-        createdAt: Date;
+    changeMyPassword(req: any, dto: UpdateUserPasswordDto): Promise<{
+        ok: boolean;
     }>;
-    update(id: User['id'], dto: UpdateUserDto): Promise<{
-        id: number;
-        email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
-    }>;
-    remove(id: User['id']): Promise<{
-        id: number;
-        email: string;
-        name: string | null;
-        passwordHash: string;
-        createdAt: Date;
+    softDeleteUser(req: any): Promise<{
+        ok: boolean;
     }>;
 }

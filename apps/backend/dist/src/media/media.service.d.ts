@@ -12,6 +12,7 @@ export declare class MediaService {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }[]>;
@@ -21,6 +22,7 @@ export declare class MediaService {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }>;
@@ -31,6 +33,7 @@ export declare class MediaService {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }>;
@@ -40,6 +43,7 @@ export declare class MediaService {
         createdAt: Date;
         title: string;
         year: number | null;
+        genre: string[];
         externalId: string | null;
         source: string | null;
     }>;

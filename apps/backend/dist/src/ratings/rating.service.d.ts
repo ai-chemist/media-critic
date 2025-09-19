@@ -3,9 +3,25 @@ import { UserRating } from '@prisma/client';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { FindRatingQueryDto } from './dto/find-rating.query.dto';
+export type RatingListItem = {
+    id: number;
+    score: number;
+    comment: string | null;
+    createdAt: Date;
+    user: {
+        id: number;
+        username: string | null;
+        image_url: string | null;
+    };
+};
+export type RatingAggregate = {
+    average: number;
+    count: number;
+};
 export declare class RatingsService {
     private readonly prisma;
     constructor(prisma: PrismaService);
+    private getAggregate;
     findAll(query: FindRatingQueryDto): Promise<{
         id: number;
         createdAt: Date;

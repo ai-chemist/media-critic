@@ -18,19 +18,56 @@ let RatingsService = class RatingsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    async getAggregate(mediaId) {
+        const [{ _avg, _count }] = await this.prisma.$transaction([
+            this.prisma.userRating.aggregate({
+                where: { mediaId },
+                _avg: { score: true },
+                _count: { _all: true },
+            }),
+        ]);
+        return { average: _avg.score ?? 0, count: _count._all };
+    }
     async findAll(query) {
-        const { skip = 0, take = 30, search, orderBy = 'mediaId', order = 'desc' } = query;
-        const where = search ? {
-            OR: [
-                { comment: { contains: search, mode: 'insensitive' } },
-                { score: { equals: Number(search) } },
-            ],
-        } : undefined;
+        const { skip = 0, take = 30, search, orderBy = 'mediaId', order = 'desc', withUser = false, } = query;
+        const ORDER_BY_WHITELIST = {
+            id: true,
+            createdAt: true,
+            score: true,
+            mediaId: true,
+            userId: true,
+        };
+        if (!ORDER_BY_WHITELIST[orderBy]) {
+            throw new common_1.BadRequestException('Invalid OrderBy');
+        }
+        const where = search
+            ? isFinite(Number(search))
+                ? {
+                    OR: [
+                        { comment: { contains: String(search), mode: 'insensitive' } },
+                        { score: { equals: Number(search) } },
+                    ],
+                } : { comment: { contains: String(search), mode: 'insensitive' } }
+            : undefined;
         return this.prisma.userRating.findMany({
             skip,
             take,
             where,
             orderBy: { [orderBy]: order },
+            ...(withUser && {
+                select: {
+                    id: true,
+                    score: true,
+                    comment: true,
+                    createdAt: true,
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                        }
+                    }
+                }
+            })
         });
     }
     async findOne(id) {

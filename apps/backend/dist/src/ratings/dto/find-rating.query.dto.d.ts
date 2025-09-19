@@ -4,4 +4,5 @@ export declare class FindRatingQueryDto {
     search?: string;
     orderBy?: 'userId' | 'mediaId';
     order?: 'asc' | 'desc';
+    withUser?: boolean;
 }
