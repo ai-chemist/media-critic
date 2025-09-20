@@ -44,6 +44,7 @@
 |   09/17   |            RatingsController 수정            |                 RatingsService 수정에 따른 Controller 수정                 |                                                                                                                 |
 |   09/18   |                  Genre 추가                  |                         Media 테이블에 genre 추가                         |                                                                                                                 |
 |   09/19   |              몇가지 오류 수정 및 테스트               |              Dto를 통한 UserServices 동작 확인 및 DB 내부 확인 완료               |                                                      확장 가능                                                      |
+|   09/20   |               frontend init                |                  next.js를 통한 프런트엔드 디렉터리 및 프로젝트 생성                   ||
 
 ---
 
@@ -63,3 +64,4 @@
 |                                 payload의 사용 이유와 sub 이라는 이름을 사용하는 이유                                 ||||
 |                 /ratings/rating.service.ts -> findAll() -> WHITELIST 부분 더 나은 이름 찾기                  ||||
 |         isFinite() 메서드는 무엇?, prisma를 통해 select 구문을 전달 할 때 mode: 'insentive' 부분이 의미하는 바는 무엇?         ||||
+|                                         next.js 구조 다시 확인하기                                          ||||
