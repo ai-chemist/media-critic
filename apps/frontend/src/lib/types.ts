@@ -5,3 +5,15 @@ export type Media = {
     title: string;
     type: string;
 }
+
+export type UserRating = {
+    id: number;
+    score: number;
+    comment: string;
+}
+
+export type User = {
+    id: number;
+    email: string;
+    username: string;
+}
