@@ -45,7 +45,9 @@
 |   09/18   |                  Genre 추가                  |                         Media 테이블에 genre 추가                         |                                                                                                                 |
 |   09/19   |              몇가지 오류 수정 및 테스트               |              Dto를 통한 UserServices 동작 확인 및 DB 내부 확인 완료               |                                                      확장 가능                                                      |
 |   09/20   |               frontend init                |                  next.js를 통한 프런트엔드 디렉터리 및 프로젝트 생성                   ||
-|   09/21    |         frontend - types.ts 몇가지 추가         |                      backend 부분과의 연동을 위한 파일 수정                      ||
+|   09/21   |         frontend - types.ts 몇가지 추가         |                      backend 부분과의 연동을 위한 파일 수정                      ||
+|   09/22   |                  전면 리팩터링                   |                      재 설계 및 기능 명세 재정의 후 다시 할 것                      ||
+
 ---
 
 #### 추가 사항
