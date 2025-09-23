@@ -1,13 +1,14 @@
 ## media-critic-alpha (Multimedia Critic Web System)
 
-<aside>
-💡
+&nbsp;
 
-프로젝트 목적 : 면접 시 제출할 포트폴리오 / 시스템 전반의 설계 및 개발, 테스트를 통한 실력 향상 및 개발 과정 전반에 대한 이해
+> 💡 프로젝트 목적 : 면접 시 제출할 포트폴리오 / 시스템 전반의 설계 및 개발, 테스트를 통한 실력 향상 및 개발 과정 전반에 대한 이해
 
-</aside>
+&nbsp;
 
-## 1. 시스템 개요
+## System
+
+### 1. 시스템 개요
 
 - **주요 기능** : 영화, 도서, 게임 등의 미디어에 대한 정보 및 평점을 평론가에게 제공 및 사용자의 성향에 따른 추천 시스템 구축
 - **사용자 역할 (Role)** : 비회원 (제한된 기능), 회원 (일반적인 기능), 관리자 (관리 기능)
@@ -16,7 +17,7 @@
 
 ---
 
-## 2. 시스템 구성 요소
+### 2. 시스템 구성 요소
 
 - **Frontend** : Next.js (App Router), TypeScript
 - **Backend** : NestJS (Controller, Service, Repository) - Prisma를 기본값으로 사용, 필요 시 확장
@@ -25,7 +26,7 @@
 
 ---
 
-## 3. Application Architecture
+### 3. Application Architecture
 
 - **Layered**
     - **Controller** : 인증 및 인가, DTO 검증, 라우팅
@@ -67,7 +68,7 @@
 
 ---
 
-## 4. Data Architecture
+### 4. Data Architecture
 
 - **User**
     - id (PK): Number
@@ -117,20 +118,39 @@
 
 ---
 
-## 5. Network Architecture
+### 5. Network Architecture
 
 - 기본적으로 자체 크롤링 데이터 및 메서드 사용
 - 추후 확장 시 IMDB 등의 API 키 발급받아 사용
 - CORS 사용으로 외부 접근 차단
 - MVP 구조 확정 후 확장 시 재 설정 및 설계 필요
 
-## 6. 확장 가능 기능
+### 6. 확장 가능 기능
 
 - API 사용 등으로 빅데이터 사용
 - 데이터 분석 기능 탑제
 - 사용자 개인 페이지 생성하여 스레드 형식으로 사용자의 평가 조회 가능
 - 비회원 조회 기능
 
+
+---
+## Development Environments
+
+### Middleware
+
+- Database : PostgreSQL
+    - NoSQL 계열에 비하여 정형화된 형태가 필요하고 PostgreSQL 에서 JSONB 타입을 지원하기에 NoSQL 계열의 장점을 살리기 어렵다고 판단
+
+### Framework - 버전 확정 시 명시할 것
+
+- NestJS (Backend)
+    - Node.js 계열 백엔드 개발 프레임워크이며 Layered Architecture 기반의 구조 및 Module 시스템을 활용하기 위하여 선택
+- Next.js (Frontend)
+    - React 기반으로 사용 가능하며 vercel 을 통하여 배포 및 관리가 용이하여 선택
+
+### Code Style
+
+- ESLint & Prettier 사용
 
 ---
 
