@@ -1,18 +1,135 @@
 ## media-critic-alpha (Multimedia Critic Web System)
 
-#### 사용 기술
+<aside>
+💡
 
-|     기술     |            용도             |      버전       |
-|:----------:|:-------------------------:|:-------------:|
-|  node.js   |          node.js          | 22.14.0 (LTS) |
-| typescript |   programming language    |     5.9.2     |
-|   eslint   |    dev only dependency    |    9.34.0     |
-|  prettier  |    dev only dependency    |     3.6.2     |
-|    pnpm    |      package manager      |    10.15.1    |
-|  nest.js   |     backend framework     |    11.0.1     |
-|  swagger   |       api document        |    11.2.0     |
-| postgresql |         database          |    17.6.1     |
-|   prisma   | object relational mapping |    6.15.0     |
+프로젝트 목적 : 면접 시 제출할 포트폴리오 / 시스템 전반의 설계 및 개발, 테스트를 통한 실력 향상 및 개발 과정 전반에 대한 이해
+
+</aside>
+
+## 1. 시스템 개요
+
+- **주요 기능** : 영화, 도서, 게임 등의 미디어에 대한 정보 및 평점을 평론가에게 제공 및 사용자의 성향에 따른 추천 시스템 구축
+- **사용자 역할 (Role)** : 비회원 (제한된 기능), 회원 (일반적인 기능), 관리자 (관리 기능)
+- **주요 유스케이스** : 회원 관리 (회원 가입 및 로그인), 미디어 (CRUD), 평점 분석 (python library 를 통한 자체 개발), 평가 작성 (회원에 한하여 미디어에 대한 평가 작성), 관리자 기능 (정책을 위반하는 평가, 회원 등에 대한 삭제 및 수정 권한)
+- **추천 시스템** : MVP 구조 완성 이후 python 계열로 직접 생성 및 적용
+
+---
+
+## 2. 시스템 구성 요소
+
+- **Frontend** : Next.js (App Router), TypeScript
+- **Backend** : NestJS (Controller, Service, Repository) - Prisma를 기본값으로 사용, 필요 시 확장
+- **Database** : PostgreSQL, Prisma (ORM)
+- **Etc** : Redis (Session)
+
+---
+
+## 3. Application Architecture
+
+- **Layered**
+    - **Controller** : 인증 및 인가, DTO 검증, 라우팅
+    - **Service** : 트랜잭션 시작 및 관리, 도메인 규칙 (제한 사항) 적용 등의 로직 담당
+    - **Data (Repository)**  : PrismaService 사용
+- **Module**
+    - Auth, User, Rating 등 모듈화 하여 관리
+- **Validation**
+    - **Request** : DTO & class-validator
+    - **Domain** : 시스템 규칙 (ex : 1명의 사용자가 특정 미디어에 대하여 1개 초과의 평가 작성 불가) 적용
+- **Error Handling**
+    - **AppFilter** : 모든 예외를 필터링 하여 JSON 형식으로 파싱
+        
+        ```json
+        {
+        	"success": false,
+        	"error": {
+        		"code": "User_Already_Exists",
+        		"message": "이미 존재하는 사용자입니다.",
+        		"status": 409,
+        		"details": { "user_id": 1 },
+        	},
+        	"requestId": "1",
+        	"path": "/auth/signup",
+        	"method": "POST",
+        	"timestamp": "2025-09-23T00:00:00",
+        }
+        ```
+        
+- **API** : RESTful + 추후 필요 시 확장
+    - 확장성 및 추후 관리를 위해 버전명 명시
+        - v1/auth/signup 등의 경로 사용
+- **Authorization** : JWT, Session 관리 및 Role Guard 적용
+    - JWT
+        - AccessToken : 30m, 저장 X
+        - RefreshToken: 3d, 테이블로 관리
+- **Transaction**
+    - 모든 트랜잭션은 Service Layer에서 호출 및 관리
+
+---
+
+## 4. Data Architecture
+
+- **User**
+    - id (PK): Number
+    - email (unique): String
+    - password_hash: String - 해싱하지 않은 값 저장 X
+    - role: string - UserRole (ADMIN | USER)
+    - status: UserStatus
+    - name: String
+    - name_normalized: String - name 값을 trim().toLower() 적용하여 검색에 사용
+    - tag: Number - # + n개의 숫자 (name_normalized + tag 값은 unique)
+    - image_url?: String
+    - created_at, updated_at: DateTime
+    - @unique(name_normalized, tag) - name + tag 조합은 유일성을 만족해야함
+
+- Media
+    - id (PK): Number
+    - type: Enum(Game, Movie, Book)
+    - title: String
+    - description: String
+    - year: DateTime
+    - image_url?: String - 크기 지정 및 잘라내기 필요
+    - meta: json { type 별로 필요한 데이터 담기 }
+    - created_at, updated_at: DateTime
+
+- Rating
+    - id (PK): Number
+    - user_id (FK): Number
+    - media_id (FK): Number
+    - score: Number - 값 범위 제한 필요
+    - comment?: String - 프런트엔드 처리 시 null 인 경우 표시되는 부분 다르게 표현
+    - created_at, updated_at: DateTime
+    - @unique(user_id, media_id) - 특정 미디어에 대한 User의 Rating은 하나만 존재 가능
+
+- Aggregation (집계용 테이블 - 매번 sum(), avg() 등 호출 시 성능 저하 우려)
+    - media_id(PK, FK): Number
+    - avg_score: Number
+    - rating_count: Number
+    - last_calculated: DateTime - 일정 시간 주기로 특정 기간 내의 미디어 갱신
+
+- RefreshToken
+    - id (PK): Number
+    - user_id (FK): Number
+    - token_hash: String - 탈취 방지를 위한 해싱
+    - expires_at: DateTime - 만료 시간
+    - revoked: Boolean - 로그아웃 등 강제로 토큰 만료
+    - created_at: DateTime
+
+---
+
+## 5. Network Architecture
+
+- 기본적으로 자체 크롤링 데이터 및 메서드 사용
+- 추후 확장 시 IMDB 등의 API 키 발급받아 사용
+- CORS 사용으로 외부 접근 차단
+- MVP 구조 확정 후 확장 시 재 설정 및 설계 필요
+
+## 6. 확장 가능 기능
+
+- API 사용 등으로 빅데이터 사용
+- 데이터 분석 기능 탑제
+- 사용자 개인 페이지 생성하여 스레드 형식으로 사용자의 평가 조회 가능
+- 비회원 조회 기능
 
 
 ---
