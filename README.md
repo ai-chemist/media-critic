@@ -68,6 +68,10 @@
         - RefreshToken: 3d, 해싱하여 테이블로 관리
 - **Transaction**
     - 모든 트랜잭션은 Service Layer에서 호출 및 관리
+- Cache
+    - Redis에 Cache 저장을 통해 TTL (Time To Live) 기간 동안 재호출 방지
+    - Main DB에 작업 시 Cache 저장을 통해 트랜잭션 오류 시 복구 장치 설정
+    - 모든 작업 후 Key 삭제
 
 ---
 
