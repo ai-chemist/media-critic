@@ -8,25 +8,28 @@
 
 ## System
 
-### 1. 시스템 개요
+## 1. 시스템 개요
 
 - **주요 기능** : 영화, 도서, 게임 등의 미디어에 대한 정보 및 평점을 평론가에게 제공 및 사용자의 성향에 따른 추천 시스템 구축
 - **사용자 역할 (Role)** : 비회원 (제한된 기능), 회원 (일반적인 기능), 관리자 (관리 기능)
 - **주요 유스케이스** : 회원 관리 (회원 가입 및 로그인), 미디어 (CRUD), 평점 분석 (python library 를 통한 자체 개발), 평가 작성 (회원에 한하여 미디어에 대한 평가 작성), 관리자 기능 (정책을 위반하는 평가, 회원 등에 대한 삭제 및 수정 권한)
 - **추천 시스템** : MVP 구조 완성 이후 python 계열로 직접 생성 및 적용
+- **비기능 목표 수치**
+    - API : p95 < 200ms
+    - Nest Interceptor & Logger 사용하여 측정
 
 ---
 
-### 2. 시스템 구성 요소
+## 2. 시스템 구성 요소
 
 - **Frontend** : Next.js (App Router), TypeScript
 - **Backend** : NestJS (Controller, Service, Repository) - Prisma를 기본값으로 사용, 필요 시 확장
 - **Database** : PostgreSQL, Prisma (ORM)
-- **Etc** : Redis (Session)
+- **Etc** : Redis (Cache & Rate Limit)
 
 ---
 
-### 3. Application Architecture
+## 3. Application Architecture
 
 - **Layered**
     - **Controller** : 인증 및 인가, DTO 검증, 라우팅
@@ -45,7 +48,7 @@
         	"success": false,
         	"error": {
         		"code": "User_Already_Exists",
-        		"message": "이미 존재하는 사용자입니다.",
+        		"reason": "이미 존재하는 사용자입니다.",
         		"status": 409,
         		"details": { "user_id": 1 },
         	},
@@ -61,14 +64,14 @@
         - v1/auth/signup 등의 경로 사용
 - **Authorization** : JWT, Session 관리 및 Role Guard 적용
     - JWT
-        - AccessToken : 30m, 저장 X
-        - RefreshToken: 3d, 테이블로 관리
+        - AccessToken : 15m, 저장 X
+        - RefreshToken: 3d, 해싱하여 테이블로 관리
 - **Transaction**
     - 모든 트랜잭션은 Service Layer에서 호출 및 관리
 
 ---
 
-### 4. Data Architecture
+## 4. Data Architecture
 
 - **User**
     - id (PK): Number
@@ -88,10 +91,11 @@
     - type: Enum(Game, Movie, Book)
     - title: String
     - description: String
-    - year: DateTime
+    - year: Number
     - image_url?: String - 크기 지정 및 잘라내기 필요
     - meta: json { type 별로 필요한 데이터 담기 }
     - created_at, updated_at: DateTime
+    - @index([title, type])
 
 - Rating
     - id (PK): Number
@@ -118,20 +122,20 @@
 
 ---
 
-### 5. Network Architecture
+## 5. Network Architecture
 
 - 기본적으로 자체 크롤링 데이터 및 메서드 사용
 - 추후 확장 시 IMDB 등의 API 키 발급받아 사용
-- CORS 사용으로 외부 접근 차단
+- CORS 사용으로 local domain 지정 및 .env 파일로 관리
 - MVP 구조 확정 후 확장 시 재 설정 및 설계 필요
 
-### 6. 확장 가능 기능
+## 6. 확장 가능 기능
 
 - API 사용 등으로 빅데이터 사용
 - 데이터 분석 기능 탑제
 - 사용자 개인 페이지 생성하여 스레드 형식으로 사용자의 평가 조회 가능
 - 비회원 조회 기능
-
+- 선택한 리스트 xls 파일로 export
 
 ---
 ## Development Environments
