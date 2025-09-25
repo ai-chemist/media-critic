@@ -15,7 +15,7 @@
 - **주요 유스케이스** : 회원 관리 (회원 가입 및 로그인), 미디어 (CRUD), 평점 분석 (python library 를 통한 자체 개발), 평가 작성 (회원에 한하여 미디어에 대한 평가 작성), 관리자 기능 (정책을 위반하는 평가, 회원 등에 대한 삭제 및 수정 권한)
 - **추천 시스템** : MVP 구조 완성 이후 python 계열로 직접 생성 및 적용
 - **비기능 목표 수치**
-    - API : p95 < 200ms
+    - API : p95 < 200ms (오류율 0% 기준)
     - Nest Interceptor & Logger 사용하여 측정
 
 ---
@@ -128,7 +128,7 @@
 
 ## 5. Network Architecture
 
-- 기본적으로 자체 크롤링 데이터 및 메서드 사용
+- MVP 구조 및 초기 버전 SQL 집계 함수 사용 및 python 라이브러리 활용 API 생성 및 적용
 - 추후 확장 시 IMDB 등의 API 키 발급받아 사용
 - CORS 사용으로 local domain 지정 및 .env 파일로 관리
 - MVP 구조 확정 후 확장 시 재 설정 및 설계 필요
@@ -148,6 +148,8 @@
 
 - Database : PostgreSQL
     - NoSQL 계열에 비하여 정형화된 형태가 필요하고 PostgreSQL 에서 JSONB 타입을 지원하기에 NoSQL 계열의 장점을 살리기 어렵다고 판단
+- Object Relational Mapping
+    - Prisma
 
 ### Framework - 버전 확정 시 명시할 것
 
@@ -155,6 +157,10 @@
     - Node.js 계열 백엔드 개발 프레임워크이며 Layered Architecture 기반의 구조 및 Module 시스템을 활용하기 위하여 선택
 - Next.js (Frontend)
     - React 기반으로 사용 가능하며 vercel 을 통하여 배포 및 관리가 용이하여 선택
+
+### Package Manager
+- pnpm
+    - Next.js 권장
 
 ### Code Style
 
