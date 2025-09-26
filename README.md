@@ -7,20 +7,20 @@
 &nbsp;
 
 ## System
-
-## 1. 시스템 개요
+### 1. 시스템 개요
 
 - **주요 기능** : 영화, 도서, 게임 등의 미디어에 대한 정보 및 평점을 평론가에게 제공 및 사용자의 성향에 따른 추천 시스템 구축
 - **사용자 역할 (Role)** : 비회원 (제한된 기능), 회원 (일반적인 기능), 관리자 (관리 기능)
 - **주요 유스케이스** : 회원 관리 (회원 가입 및 로그인), 미디어 (CRUD), 평점 분석 (python library 를 통한 자체 개발), 평가 작성 (회원에 한하여 미디어에 대한 평가 작성), 관리자 기능 (정책을 위반하는 평가, 회원 등에 대한 삭제 및 수정 권한)
 - **추천 시스템** : MVP 구조 완성 이후 python 계열로 직접 생성 및 적용
 - **비기능 목표 수치**
-    - API : p95 < 200ms (오류율 0% 기준)
+    - API : p95 < 200ms - 오류율 (테스트 : 0% 기준)
+        - 실행 후 엔드포인트 별로 분류할 것
     - Nest Interceptor & Logger 사용하여 측정
 
 ---
 
-## 2. 시스템 구성 요소
+### 2. 시스템 구성 요소
 
 - **Frontend** : Next.js (App Router), TypeScript
 - **Backend** : NestJS (Controller, Service, Repository) - Prisma를 기본값으로 사용, 필요 시 확장
@@ -29,7 +29,7 @@
 
 ---
 
-## 3. Application Architecture
+### 3. Application Architecture
 
 - **Layered**
     - **Controller** : 인증 및 인가, DTO 검증, 라우팅
@@ -41,13 +41,13 @@
     - **Request** : DTO & class-validator
     - **Domain** : 시스템 규칙 (ex : 1명의 사용자가 특정 미디어에 대하여 1개 초과의 평가 작성 불가) 적용
 - **Error Handling**
-    - **AppFilter** : 모든 예외를 필터링 하여 JSON 형식으로 파싱
-        
+    - **AppFilter** : 모든 예외를 필터링 하여 JSON 형식으로 파싱 - 에러 응답 포맷 통일
+
         ```json
         {
         	"success": false,
         	"error": {
-        		"code": "User_Already_Exists",
+        		"code": "USER_ALREADY_EXISTS",
         		"reason": "이미 존재하는 사용자입니다.",
         		"status": 409,
         		"details": { "user_id": 1 },
@@ -55,14 +55,14 @@
         	"requestId": "1",
         	"path": "/auth/signup",
         	"method": "POST",
-        	"timestamp": "2025-09-23T00:00:00",
+        	"timestamp": "2025-09-23T00:00:00Z",
         }
         ```
-        
+
 - **API** : RESTful + 추후 필요 시 확장
     - 확장성 및 추후 관리를 위해 버전명 명시
         - v1/auth/signup 등의 경로 사용
-- **Authorization** : JWT, Session 관리 및 Role Guard 적용
+- **Authorization** : JWT 관리 및 Role Guard 적용
     - JWT
         - AccessToken : 15m, 저장 X
         - RefreshToken: 3d, 해싱하여 테이블로 관리
@@ -70,12 +70,12 @@
     - 모든 트랜잭션은 Service Layer에서 호출 및 관리
 - Cache
     - Redis에 Cache 저장을 통해 TTL (Time To Live) 기간 동안 재호출 방지
-    - Main DB에 작업 시 Cache 저장을 통해 DB 성능 저하 방지
+    - 읽기 : 캐시 조회 → 데이터 없을 시 DB 조회 및 set(TTL) : 커밋 후 DELETE
     - 모든 작업 후 Key 삭제
 
 ---
 
-## 4. Data Architecture
+### 4. Data Architecture
 
 - **User**
     - id (PK): Number
@@ -120,54 +120,74 @@
     - id (PK): Number
     - user_id (FK): Number
     - token_hash: String - 탈취 방지를 위한 해싱
+    - ip - UserAgent
     - expires_at: DateTime - 만료 시간
     - revoked: Boolean - 로그아웃 등 강제로 토큰 만료
     - created_at: DateTime
 
 ---
 
-## 5. Network Architecture
+### 5. Network Architecture
 
-- MVP 구조 및 초기 버전 SQL 집계 함수 사용 및 python 라이브러리 활용 API 생성 및 적용
+- 기본적으로 자체 크롤링 데이터 및 메서드 사용
 - 추후 확장 시 IMDB 등의 API 키 발급받아 사용
-- CORS 사용으로 local domain 지정 및 .env 파일로 관리
+- CORS 사용으로 브라우저 제어
 - MVP 구조 확정 후 확장 시 재 설정 및 설계 필요
+- /health (미정) 엔드포인트 생성 후 health check
 
-## 6. 확장 가능 기능
+### 6. 확장 가능 기능
 
 - API 사용 등으로 빅데이터 사용
 - 데이터 분석 기능 탑제
 - 사용자 개인 페이지 생성하여 스레드 형식으로 사용자의 평가 조회 가능
 - 비회원 조회 기능
 - 선택한 리스트 xls 파일로 export
-
 ---
-## Development Environments
 
+## Development Environment
 ### Middleware
+
+#### Database & ORM
 
 - Database : PostgreSQL
     - NoSQL 계열에 비하여 정형화된 형태가 필요하고 PostgreSQL 에서 JSONB 타입을 지원하기에 NoSQL 계열의 장점을 살리기 어렵다고 판단
 - Object Relational Mapping
     - Prisma
 
-### Framework - 버전 확정 시 명시할 것
+### Framework & Language- 버전 확정 시 명시할 것
 
+- Node.js v22 (Runtime)
 - NestJS (Backend)
     - Node.js 계열 백엔드 개발 프레임워크이며 Layered Architecture 기반의 구조 및 Module 시스템을 활용하기 위하여 선택
 - Next.js (Frontend)
     - React 기반으로 사용 가능하며 vercel 을 통하여 배포 및 관리가 용이하여 선택
 
 ### Package Manager
+
 - pnpm
     - Next.js 권장
 
 ### Code Style
 
 - ESLint & Prettier 사용
----
-## Security
 
+### Log
+
+- Pino
+    - JSON 구조 로그 및 경량화 Winston과 비교해 Local 및 MVP 구조 개발에 적합하다 판단
+    - redact key : authorization, cookie
+
+### API Documents
+
+- Nest Swagger - 개발 환경에서만 노출
+
+### Env
+
+- dotenv 사용 및 .env.dev / .env.test 등으로 구분하여 사용할 것
+
+---
+
+## Security
 ### 자산 및 데이터 분류
 
 - 데이터 등급
@@ -177,13 +197,13 @@
 
 ### 아키텍처 & 신뢰 경계
 
-- 경계 : Brouser ↔ API / API ↔ DB/Redis
+- 경계 : Browser ↔ API / API ↔ DB/Redis
 - 최종적으로 port에는 api 만 노출시킬 것
 
 ### 인증 & 인가 및 토큰 관리
 
 - 인증
-    - emali & password (hash 및 검증)
+    - email & password (hash 및 검증)
 - Token (JWT)
     - Access Token : 15m / Client Authorization 헤더로 전송, 저장 X
     - Refresh Token : 3d / DB에 해시 저장, 응답 시 HttpOnly 쿠키 사용
@@ -200,7 +220,7 @@
 - 도메인 규칙
     - 1 User는 1 Media에 대한 Rating을 1개만 작성할 수 있음
 - 출력
-    - 에러 응답 표준화를 통한 로그 노출 방지
+    - 에러 응답 표준화 (민감 정보 노출 X) 를 통한 로그 노출 방지
 
 ### 전송 및 저장
 
@@ -225,6 +245,37 @@
 - dotenv-safe 설정 등을 통한 값 확인
 - JWT_SECRET 키 길이 설정
 
+### 로깅
+
+- Pino 및 JSON 구조화하여 사용
+---
+
+## Test Strategy
+### 테스트 전략
+
+- Unit (단위) : 규칙 및 분기 (Service, Guard, Pipe), Fast and Isolation, Mock and Stub
+- Integration (통합) : Postgres & Redis 트랜잭션 및 제약, 캐시 동작 검증
+- E2E (End to End) : Nest TestingModule + Supertest - 전체 흐름
+- 보안 : 인증/인가 장치 우회, RateLimit, Error 정보 노출
+
+### 테스트 환경
+
+- Node.js 22
+- pnpm
+- Jest (Unit, Integration, E2E) - 3가지로 분리
+- supertest (E2E) - 메모리 실행 후 HTTP 레벨에서 검증
+- Pino - Logger
+
+### 품질
+
+- Unit Coverage ≥ 80%
+- E2E 5xx = 0%
+- p95 < 200ms
+
+### 공통
+
+- CORS : 허용 origin 만 응답, 금지 origin 브라우저 차단 확인
+- Logging : 요청 단위에 requestId 포함 여부, 민감 정보 누락 확인
 ---
 
 #### 진행 내역
