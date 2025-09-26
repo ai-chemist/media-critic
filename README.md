@@ -145,7 +145,7 @@
 ---
 
 ## Development Environment
-### Middleware
+### 1. Middleware
 
 #### Database & ORM
 
@@ -153,54 +153,56 @@
     - NoSQL 계열에 비하여 정형화된 형태가 필요하고 PostgreSQL 에서 JSONB 타입을 지원하기에 NoSQL 계열의 장점을 살리기 어렵다고 판단
 - Object Relational Mapping
     - Prisma
+    
+---
 
-### Framework & Language- 버전 확정 시 명시할 것
+### 2. Framework & Language- 버전 확정 시 명시할 것
 
 - Node.js v22 (Runtime)
 - NestJS (Backend)
     - Node.js 계열 백엔드 개발 프레임워크이며 Layered Architecture 기반의 구조 및 Module 시스템을 활용하기 위하여 선택
 - Next.js (Frontend)
     - React 기반으로 사용 가능하며 vercel 을 통하여 배포 및 관리가 용이하여 선택
-
-### Package Manager
+---
+### 3. Package Manager
 
 - pnpm
     - Next.js 권장
-
-### Code Style
+---
+### 4. Code Style
 
 - ESLint & Prettier 사용
-
-### Log
+---
+### 5. Log
 
 - Pino
     - JSON 구조 로그 및 경량화 Winston과 비교해 Local 및 MVP 구조 개발에 적합하다 판단
     - redact key : authorization, cookie
-
-### API Documents
+---
+### 6. API Documents
 
 - Nest Swagger - 개발 환경에서만 노출
-
-### Env
+---
+### 7. Env
 
 - dotenv 사용 및 .env.dev / .env.test 등으로 구분하여 사용할 것
 
 ---
 
 ## Security
-### 자산 및 데이터 분류
+### 1. 자산 및 데이터 분류
 
 - 데이터 등급
     - P0 (민감) : password_hash, refresh_token_hash 등
     - P1 (개인) : email, name (user), image_url 등
     - P2 (일반) : 비회원 조회가 가능한 점수 및 평가 등
-
-### 아키텍처 & 신뢰 경계
+---
+### 2. 아키텍처 & 신뢰 경계
 
 - 경계 : Browser ↔ API / API ↔ DB/Redis
 - 최종적으로 port에는 api 만 노출시킬 것
-
-### 인증 & 인가 및 토큰 관리
+---
+### 3. 인증 & 인가 및 토큰 관리
 
 - 인증
     - email & password (hash 및 검증)
@@ -212,8 +214,8 @@
     - 강제 로그아웃 (관리자 권한)
 - 인가
     - RBAC (Role Based Access Control) : ADMIN, USER / 사용자의 평가 등 리소스에 대한 소유권 검증
-
-### 입력 및 출력 보안
+---
+### 4. 입력 및 출력 보안
 
 - 입력
     - DTO & class-validator 사용으로 입력 데이터 검증
@@ -221,16 +223,16 @@
     - 1 User는 1 Media에 대한 Rating을 1개만 작성할 수 있음
 - 출력
     - 에러 응답 표준화 (민감 정보 노출 X) 를 통한 로그 노출 방지
-
-### 전송 및 저장
+---
+### 5. 전송 및 저장
 
 - 실제 서비스 시 HTTPS 프로토콜로 변경할 것
 - 저장
     - Token, Password 저장 시 평문 저장 금지
 - 로그
     - Token, Cookie, Password 등의 민감 정보 로그 노출 금지
-
-### 어플리케이션 보안
+---
+### 6. 어플리케이션 보안
 
 - code / reason / status / requestId / timestamp(Z)
 - CORS
@@ -238,45 +240,46 @@
 - 보안 Header
     - helmet 사용
 - Rate Limit 설정으로 무차별 요청 공격 대비
-
-### Secret 및 Key 관리
+---
+### 7. Secret 및 Key 관리
 
 - .env.test / .env.dev / .env 등으로 환경 변수 관리
 - dotenv-safe 설정 등을 통한 값 확인
 - JWT_SECRET 키 길이 설정
-
-### 로깅
+---
+### 8. 로깅
 
 - Pino 및 JSON 구조화하여 사용
 ---
 
 ## Test Strategy
-### 테스트 전략
+### 1. 테스트 전략
 
 - Unit (단위) : 규칙 및 분기 (Service, Guard, Pipe), Fast and Isolation, Mock and Stub
 - Integration (통합) : Postgres & Redis 트랜잭션 및 제약, 캐시 동작 검증
 - E2E (End to End) : Nest TestingModule + Supertest - 전체 흐름
 - 보안 : 인증/인가 장치 우회, RateLimit, Error 정보 노출
-
-### 테스트 환경
+---
+### 2. 테스트 환경
 
 - Node.js 22
 - pnpm
 - Jest (Unit, Integration, E2E) - 3가지로 분리
 - supertest (E2E) - 메모리 실행 후 HTTP 레벨에서 검증
 - Pino - Logger
-
-### 품질
+---
+### 3. 품질
 
 - Unit Coverage ≥ 80%
 - E2E 5xx = 0%
 - p95 < 200ms
-
-### 공통
+---
+### 4. 공통
 
 - CORS : 허용 origin 만 응답, 금지 origin 브라우저 차단 확인
 - Logging : 요청 단위에 requestId 포함 여부, 민감 정보 누락 확인
 ---
+
 
 #### 진행 내역
 |    날짜     |                     내역                     |                                 비고                                  |                                                      추가 사항                                                      |
