@@ -70,7 +70,7 @@
     - 모든 트랜잭션은 Service Layer에서 호출 및 관리
 - Cache
     - Redis에 Cache 저장을 통해 TTL (Time To Live) 기간 동안 재호출 방지
-    - Main DB에 작업 시 Cache 저장을 통해 트랜잭션 오류 시 복구 장치 설정
+    - Main DB에 작업 시 Cache 저장을 통해 DB 성능 저하 방지
     - 모든 작업 후 Key 삭제
 
 ---
@@ -165,6 +165,65 @@
 ### Code Style
 
 - ESLint & Prettier 사용
+---
+## Security
+
+### 자산 및 데이터 분류
+
+- 데이터 등급
+    - P0 (민감) : password_hash, refresh_token_hash 등
+    - P1 (개인) : email, name (user), image_url 등
+    - P2 (일반) : 비회원 조회가 가능한 점수 및 평가 등
+
+### 아키텍처 & 신뢰 경계
+
+- 경계 : Brouser ↔ API / API ↔ DB/Redis
+- 최종적으로 port에는 api 만 노출시킬 것
+
+### 인증 & 인가 및 토큰 관리
+
+- 인증
+    - emali & password (hash 및 검증)
+- Token (JWT)
+    - Access Token : 15m / Client Authorization 헤더로 전송, 저장 X
+    - Refresh Token : 3d / DB에 해시 저장, 응답 시 HttpOnly 쿠키 사용
+- 회전 및 폐기
+    - 재발급 시 이전 Refresh Token 무효화
+    - 강제 로그아웃 (관리자 권한)
+- 인가
+    - RBAC (Role Based Access Control) : ADMIN, USER / 사용자의 평가 등 리소스에 대한 소유권 검증
+
+### 입력 및 출력 보안
+
+- 입력
+    - DTO & class-validator 사용으로 입력 데이터 검증
+- 도메인 규칙
+    - 1 User는 1 Media에 대한 Rating을 1개만 작성할 수 있음
+- 출력
+    - 에러 응답 표준화를 통한 로그 노출 방지
+
+### 전송 및 저장
+
+- 실제 서비스 시 HTTPS 프로토콜로 변경할 것
+- 저장
+    - Token, Password 저장 시 평문 저장 금지
+- 로그
+    - Token, Cookie, Password 등의 민감 정보 로그 노출 금지
+
+### 어플리케이션 보안
+
+- code / reason / status / requestId / timestamp(Z)
+- CORS
+    - origin: [] 명시를 통해 백엔드, 프런트엔드의 통신 허용
+- 보안 Header
+    - helmet 사용
+- Rate Limit 설정으로 무차별 요청 공격 대비
+
+### Secret 및 Key 관리
+
+- .env.test / .env.dev / .env 등으로 환경 변수 관리
+- dotenv-safe 설정 등을 통한 값 확인
+- JWT_SECRET 키 길이 설정
 
 ---
 
