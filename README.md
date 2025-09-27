@@ -159,14 +159,14 @@
 ### 2. Framework & Language- 버전 확정 시 명시할 것
 
 - Node.js v22 (Runtime)
-- NestJS (Backend)
+- NestJS v11.0.1 (Backend)
     - Node.js 계열 백엔드 개발 프레임워크이며 Layered Architecture 기반의 구조 및 Module 시스템을 활용하기 위하여 선택
 - Next.js (Frontend)
     - React 기반으로 사용 가능하며 vercel 을 통하여 배포 및 관리가 용이하여 선택
 ---
 ### 3. Package Manager
 
-- pnpm
+- pnpm v10.15.1
     - Next.js 권장
 ---
 ### 4. Code Style
@@ -312,7 +312,7 @@
 |   09/21   |         frontend - types.ts 몇가지 추가         |                      backend 부분과의 연동을 위한 파일 수정                      ||
 |   09/22   |                  전면 리팩터링                   |                      재 설계 및 기능 명세 재정의 후 다시 할 것                      ||
 | 09/22 - 2 |                 시스템 설계서 작성                 |                          시스템 아키텍처 설계 작성 중                           ||
-
+|   09/27   |    media-critic 설계서 v0 작성 완료 및 프로젝트 설정     |||
 ---
 
 #### 추가 사항
