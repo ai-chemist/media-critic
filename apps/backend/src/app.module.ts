@@ -1,10 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
+
+// import { PrismaModule } from './prisma/prisma.module';
+// import { AuthModule } from './auth/auth.module';
+// import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
+        LoggerModule.forRoot({
+            pinoHttp: {
+                // 개발 환경 pretty 적용
+                transport: process.env.NODE_ENV !== 'production'
+                    ? { target: 'pino-pretty', options: { singleLine: true } }
+                    : undefined,
+                // authorization, cookie 등 민감정보 제어
+                redact: ['req.headers.authorization', 'req.headers.cookie'],
+            },
+        }),
+        // PrismaModule,
+    ],
 })
 export class AppModule {}

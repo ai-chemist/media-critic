@@ -1,11 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { Logger } from 'nestjs-pino';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true }); // pino 사용을 위해 로그를 메모리에 버퍼링 한 뒤 pino 준비 완료 후 출력
+
+  // 로거 사용 (Logger : Pino)
+  app.useLogger(app.get(Logger));
 
   // 보안 헤더 (Security Header)
   app.use(helmet());
@@ -33,5 +37,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');  // 모든 라우트 경로 앞에 /api 부여
 
   await app.listen(process.env.PORT ?? 3000);
+
+  // 부팅 완료 로그 출력
+  app.get(Logger).log(`Application Listening on Port ${process.env.PORT ?? 3000}`);
 }
 bootstrap();
