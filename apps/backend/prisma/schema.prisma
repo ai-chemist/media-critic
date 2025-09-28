@@ -13,20 +13,113 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
   id             Int    @id @default(autoincrement())
   email          String @unique
   passwordHash   String @db.VarChar(255)
   name           String @db.VarChar(16)
   nameNormalized String @db.VarChar(16)
-  tag            String @db.Char(4) // 길이를 4자로 고정
+  tag            String @db.Char(4) // tag 길이를 4자로 고정
+  role           Role   @default(USER)
 
   imageUrl String? @db.VarChar(255)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  ratings      Rating[]
+  RefreshToken RefreshToken[]
+
   @@unique([nameNormalized, tag])
   @@index([email])
-  @@index([updatedAt])
+  @@index([updatedAt, createdAt])
+}
+
+enum MediaType {
+  MOVIE
+  GAME
+  BOOK
+}
+
+model Media {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(32)
+  type        MediaType
+  description String    @db.VarChar(128)
+
+  // 추후 Json 등으로 형태 변환
+  genre     String  @db.VarChar(255)
+  year      String  @db.Char(4)
+  image_url String? @db.VarChar(255)
+
+  meta Json @default("{}")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ratings           Rating[]
+  RatingAggregation RatingAggregation[]
+
+  @@index([title, description])
+  @@index([type])
+  @@index([updatedAt, createdAt])
+}
+
+model Rating {
+  id      Int @id @default(autoincrement())
+  userId  Int
+  mediaId Int
+
+  // TODO: DTO 에서 0 to 10 값 범위 강제
+  score   Int     @db.SmallInt
+  comment String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, mediaId])
+  @@index([mediaId, createdAt])
+}
+
+model RatingAggregation {
+  mediaId     Int @id
+  sumScore    Int @default(0)
+  ratingCount Int @default(0)
+
+  // TODO: 반환 시 소수점 첫째 자리 반올림 후 * 10 하여 사용
+  avgScore         Int?     @db.SmallInt
+  lastCalculatedAt DateTime @default(now())
+
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@index([avgScore, ratingCount])
+  @@index([ratingCount])
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  tokenHash String   @db.VarChar(45) // 평문 저장 금지
+  ip        String?  @db.VarChar(45) // IPv6 고려하여 45자 제한
+  userAgent String?  @db.Text // 브라우저 운영체제 등의 정보
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 동일 해시 중복 발급 방지 unique 설정
+  @@unique([tokenHash])
+  @@index([userId])
+  @@index([revoked, expiresAt])
+  @@index([expiresAt])
 }
