@@ -320,7 +320,9 @@
 |   09/29 - 2    |              /prisma 경로 초기 작성              |    prisma.module.ts, prisma.service.ts 및 app.module.ts 내부에서 prisma 주입     ||
 |     09/30      |           auth경로의 strategy 파일 작성           |                    auth/strategies/jwt.strategy.ts 수정                     ||
 |     10/01      |            jwt-auth.guard.ts 작성            | 내부 any 타입 및 throw 할 Error Message 통일화 필요 (guard에서 할지 Filter 만들어서 처리할지 결정) ||
-
+|   10/01 - 2    |  JwtAuthGuard 전역 적용 및 Public 커스텀 데코레이터 생성  |                 전역 보호 후 공개가능 API @Public() 적용하여 요청 허용 할 것                 ||
+|   10/01 - 3    |        LoginDto 작성 및 AuthModule 정비         |                             Auth 다음 단계로 넘어갈 것                             ||
+|     10/02      |              ErrorFilter Init              |                      Error 표준 JSON 재 점검 및 전체 재작성 할 것                      ||
 ---
 
 #### 추가 사항
@@ -333,10 +335,10 @@
 |                                    mapOrmError() 메서드가 필요한게 맞을까?                                     | 예외 처리 및 prisma docs 자료 찾아보기 |                                X                                 ||
 |       회원 가입 시 토큰 발급 후 자동 로그인, 회원 가입 후 가입 정보를 자동으로 login 메서드에 넘겨 토큰을 발급 받는 방식 어느 방식이 더 좋은 방식?        |         테스트 및 자료 찾기         |            MVP 구조 특성 상 가입 후 자동 로그인으로 구현 후 추후 재 고려할 것             ||
 |                          proxy, rate, CORS, healthController의 존재 이유는 무엇인가?                          |             학습              | 형식적인 존재 이유가 아닌 실무적인 부분에서 존재해야하는 이유와 다른 방식으로 접근할 수는 없는 지 등등도 찾아보기 ||
-|            프로젝트와 직접 연관은 없지만 node.js 계열에서 자주 보이는 webpack 이란 무엇이며 왜 사용하고, 어떠한 대체 수단이 있는가?             ||                                                                  ||
-|                                     Promise.all 자주 보이는 메서드 파해치기                                     ||                                                                  ||
-|               세션, 쿠키를 동시에 사용? 혹은 하나만 사용할 경우 등의 이점은 무엇이며 token 세션이 아닌 다른 세션 관리 방법도 존재?               ||                                                                  ||
-|                                 payload의 사용 이유와 sub 이라는 이름을 사용하는 이유                                 ||                                                                  ||
-|                 /ratings/rating.service.ts -> findAll() -> WHITELIST 부분 더 나은 이름 찾기                  ||                                                                  ||
-|         isFinite() 메서드는 무엇?, prisma를 통해 select 구문을 전달 할 때 mode: 'insentive' 부분이 의미하는 바는 무엇?         ||                                                                  ||
-|                                         next.js 구조 다시 확인하기                                          ||                                                                  ||
+|            프로젝트와 직접 연관은 없지만 node.js 계열에서 자주 보이는 webpack 이란 무엇이며 왜 사용하고, 어떠한 대체 수단이 있는가?             |                             |                                                                  ||
+|                                     Promise.all 자주 보이는 메서드 파해치기                                     |                             |                                                                  ||
+|               세션, 쿠키를 동시에 사용? 혹은 하나만 사용할 경우 등의 이점은 무엇이며 token 세션이 아닌 다른 세션 관리 방법도 존재?               |                             |                                                                  ||
+|                                 payload의 사용 이유와 sub 이라는 이름을 사용하는 이유                                 |                             |                                                                  ||
+|                 /ratings/rating.service.ts -> findAll() -> WHITELIST 부분 더 나은 이름 찾기                  |                             |                                                                  ||
+|         isFinite() 메서드는 무엇?, prisma를 통해 select 구문을 전달 할 때 mode: 'insentive' 부분이 의미하는 바는 무엇?         |                             |                                                                  ||
+|                                         next.js 구조 다시 확인하기                                          |                             |                                                                  ||
