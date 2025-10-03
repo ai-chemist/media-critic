@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
+
 
 import { PrismaModule } from './prisma/prisma.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { EnvSchema } from './config/env.schema';
 import { AuthModule } from './auth/auth.module';
 // import { UsersModule } from './users/users.module';
@@ -31,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
     ],
     providers: [
         { provide: APP_GUARD, useClass: JwtAuthGuard },
+        { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
     ],
 })
 export class AppModule {}

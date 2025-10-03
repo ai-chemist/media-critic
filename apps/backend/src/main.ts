@@ -8,7 +8,7 @@ import helmet from 'helmet';
 async function bootstrap(): Promise<void> {
   const app: INestApplication<any> = await NestFactory.create(AppModule, { bufferLogs: true }); // pino 사용을 위해 로그를 메모리에 버퍼링 한 뒤 pino 준비 완료 후 출력
 
-  // 로거 사용 (Logger : Pino)
+  // 로거 사용 (Logger: Pino)
   app.useLogger(app.get(Logger));
 
   // 보안 헤더 (Security Header)
