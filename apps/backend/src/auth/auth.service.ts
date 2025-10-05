@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from './password.services';
+import {RegisterDto} from "./dto/register.dto";
 // import { UsersService } from '../users/user.service';
 
 @Injectable()
@@ -26,5 +27,13 @@ export class AuthService {
     //         user: { id: user.id, email: user.email, name: user.name, tag: user.tag },
     //         tokens: { accessToken },
     //     };
+    // }
+
+    // async register(dto: RegisterDto) {
+    //     const user = await this.users.createUser(dto);
+    //     const accessToken = await this.jwt.signAsync({ sub: user.id, name: user.name });
+    //
+    //     // TODO: RefreshToken 발급 메서드 생성 및 추가
+    //     return { users, tokens: { accessToken } };
     // }
 }
