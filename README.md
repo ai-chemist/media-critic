@@ -325,10 +325,12 @@
 |     10/02      |              ErrorFilter Init              |                      Error 표준 JSON 재 점검 및 전체 재작성 할 것                      ||
 |     10/03      |  Auth Controller & Service Skeleton init   |               Login 기능 작성 완료 -> User 코드 완료 후 주석 풀고 테스트 할 것                ||
 |     10/04      |               오타 수정 및 주석 해제                |                                                                           ||
-|     10/05      |         Auth Module Register 기능 작성         |       Controller @Post('register) 경로 라우트 및 Service register 메서드 생성        ||
+|     10/05      |         Auth Module Register 기능 작성         |       Controller @Post('register') 경로 라우트 및 Service register 메서드 생성       ||
 |     10/06      |                    ...                     |                             OAuth 인증방식 추가할 것                              ||
 |     10/07      |                    ...                     |                          Toss html5 공모전 참여 결정할 것                          ||
 |     10/08      |                    ...                     |                                    휴식                                     ||
+|     10/09      |     refreshToken Service 추가 작성 및 주석 처리     |                                 대거 수정 필요                                  ||
+
 ---
 
 #### 추가 사항
