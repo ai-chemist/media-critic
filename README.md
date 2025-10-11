@@ -144,7 +144,7 @@
 - 선택한 리스트 xls 파일로 export
 ---
 
-## Development Environment
+## Development Environment (버전 명시할 것)
 ### 1. Middleware
 
 #### Database & ORM
