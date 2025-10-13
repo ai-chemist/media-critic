@@ -144,7 +144,7 @@
 - 선택한 리스트 xls 파일로 export
 ---
 
-## Development Environment
+## Development Environment (버전 명시할 것)
 ### 1. Middleware
 
 #### Database & ORM
@@ -332,6 +332,7 @@
 |     10/09      |                    ...                     |||
 |     10/10      |     refreshToken Service 추가 작성 및 주석 처리     |                                 대거 수정 필요                                  ||
 | 10/11 - 10/12  |                     휴식                     |||
+|      10/13      |          refreshToken Service 수정           |||
 ---
 
 #### 추가 사항
