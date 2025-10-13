@@ -316,23 +316,24 @@
 |   09/27 - 2    |                Backend init                |               NestJS v11 project 생성 및 schema.prisma 파일 작성 중               |                                                                                                                 |
 |     09/28      |              schema.prisma v0              |            schema.prisma 파일에 User 외 Media, Rating 등 사용할 모델 정의             |                                            TODO: migrate & generate                                             |
 |   09/28 - 2    |             main.ts Bootstrap              |                  프로젝에 필요한 설정 및 파이프, 필터 등 main.ts 내부에 작성                   |                                               .env.* 내부 노출 절대 주의                                                |
-|     09/29      |              app.module.ts 작성              |   app.controller.ts, app.service.ts 파일 제거 및 app.module.ts 내부에 사용할 모듈 설정   ||
-|   09/29 - 2    |              /prisma 경로 초기 작성              |    prisma.module.ts, prisma.service.ts 및 app.module.ts 내부에서 prisma 주입     ||
-|     09/30      |           auth경로의 strategy 파일 작성           |                    auth/strategies/jwt.strategy.ts 수정                     ||
-|     10/01      |            jwt-auth.guard.ts 작성            | 내부 any 타입 및 throw 할 Error Message 통일화 필요 (guard에서 할지 Filter 만들어서 처리할지 결정) ||
-|   10/01 - 2    |  JwtAuthGuard 전역 적용 및 Public 커스텀 데코레이터 생성  |                 전역 보호 후 공개가능 API @Public() 적용하여 요청 허용 할 것                 ||
-|   10/01 - 3    |        LoginDto 작성 및 AuthModule 정비         |                             Auth 다음 단계로 넘어갈 것                             ||
-|     10/02      |              ErrorFilter Init              |                      Error 표준 JSON 재 점검 및 전체 재작성 할 것                      ||
-|     10/03      |  Auth Controller & Service Skeleton init   |               Login 기능 작성 완료 -> User 코드 완료 후 주석 풀고 테스트 할 것                ||
-|     10/04      |               오타 수정 및 주석 해제                |                                                                           ||
-|     10/05      |         Auth Module Register 기능 작성         |       Controller @Post('register') 경로 라우트 및 Service register 메서드 생성       ||
-|     10/06      |                    ...                     |                             OAuth 인증방식 추가할 것                              ||
-|     10/07      |                    ...                     |                          Toss html5 공모전 참여 결정할 것                          ||
-|     10/08      |                    ...                     |                                    휴식                                     ||
-|     10/09      |                    ...                     |||
-|     10/10      |     refreshToken Service 추가 작성 및 주석 처리     |                                 대거 수정 필요                                  ||
-| 10/11 - 10/12  |                     휴식                     |||
-|      10/13      |          refreshToken Service 수정           |||
+|     09/29      |              app.module.ts 작성              |   app.controller.ts, app.service.ts 파일 제거 및 app.module.ts 내부에 사용할 모듈 설정   |                                                                                                                 |
+|   09/29 - 2    |              /prisma 경로 초기 작성              |    prisma.module.ts, prisma.service.ts 및 app.module.ts 내부에서 prisma 주입     |                                                                                                                 |
+|     09/30      |           auth경로의 strategy 파일 작성           |                    auth/strategies/jwt.strategy.ts 수정                     |                                                                                                                 |
+|     10/01      |            jwt-auth.guard.ts 작성            | 내부 any 타입 및 throw 할 Error Message 통일화 필요 (guard에서 할지 Filter 만들어서 처리할지 결정) |                                                                                                                 |
+|   10/01 - 2    |  JwtAuthGuard 전역 적용 및 Public 커스텀 데코레이터 생성  |                 전역 보호 후 공개가능 API @Public() 적용하여 요청 허용 할 것                 |                                                                                                                 |
+|   10/01 - 3    |        LoginDto 작성 및 AuthModule 정비         |                             Auth 다음 단계로 넘어갈 것                             |                                                                                                                 |
+|     10/02      |              ErrorFilter Init              |                      Error 표준 JSON 재 점검 및 전체 재작성 할 것                      |                                                                                                                 |
+|     10/03      |  Auth Controller & Service Skeleton init   |               Login 기능 작성 완료 -> User 코드 완료 후 주석 풀고 테스트 할 것                |                                                                                                                 |
+|     10/04      |               오타 수정 및 주석 해제                |                                                                           |                                                                                                                 |
+|     10/05      |         Auth Module Register 기능 작성         |       Controller @Post('register') 경로 라우트 및 Service register 메서드 생성       |                                                                                                                 |
+|     10/06      |                    ...                     |                             OAuth 인증방식 추가할 것                              |                                                                                                                 |
+|     10/07      |                    ...                     |                          Toss html5 공모전 참여 결정할 것                          |                                                                                                                 |
+|     10/08      |                    ...                     |                                    휴식                                     |                                                                                                                 |
+|     10/09      |                    ...                     |                                                                           |                                                                                                                 |
+|     10/10      |     refreshToken Service 추가 작성 및 주석 처리     |                                 대거 수정 필요                                  |                                                                                                                 |
+| 10/11 - 10/12  |                     휴식                     |                                                                           |                                                                                                                 |
+|     10/13      |          refreshToken Service 수정           |                                                                           |                                                                                                                 |
+|   10/13 - 2    |             refreshToken 수정 완료             |     refreshTokenService & authService 수정 완료 -> Controller & Module 수정|               refreshTokenService 내부에서 private 메서드를 분리 시키는 것이 좋을 지 아니면 파일 내에서 사용하는 것이 좋을 지 고민할 것                ||                                                         ||
 ---
 
 #### 추가 사항
