@@ -21,6 +21,9 @@ import { PasswordService } from './password.services';
                 secret: config.get<string>('JWT_ACCESS_SECRET', 'dev_access_secret'),
                 signOptions: {
                     expiresIn: config.get<string>('JWT_ACCESS_EXPIRES', '15m'),
+                    issuer: config.get('JWT_ISSUER', 'api'),
+                    audience: config.get('JWT_AUDIENCE', 'web'),
+                    algorithm: 'HS256',
                 },
             }),
         }),

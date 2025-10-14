@@ -29,6 +29,7 @@ export class RefreshTokenService {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax' as const,
+            domain: process.env.COOKIE_DOMAIN || undefined,
             path: '/api/auth/refresh',
         };
     }

@@ -24,9 +24,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
             // 서명 검증 키 config에서 get
             secretOrKey: config.get<string>('JWT_ACCESS_SECRET')!,
             // JWT 발급자 검사
-            issuer: 'api',
+            issuer: config.get('JWT_ISSUER', 'api'),
             // JWT 발급 대상자 검사
-            audience: 'web',
+            audience: config.get('JWT_AUDIENCE', 'web'),
             // 허용할 알고리즘 화이트리스트
             algorithms: ['HS256'],
         });
