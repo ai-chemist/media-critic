@@ -4,7 +4,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { z } from "zod";
 
-// import { UserService } from '../../users/user.service';
+// import { UserService } from '../../users/users.service';
 
 const JwtPayloadSchema = z.object({
     sub: z.number().int().positive(),
@@ -36,9 +36,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         const p = JwtPayloadSchema.safeParse(payload);
         if (!p.success) { throw new UnauthorizedException('Invalid JWT Payload'); }
 
-        // const user = await this.users.findActiveById(p.data.sub);
-        // if (!user) { throw new UnauthorizedException('User Not Found'); }
+        // const users = await this.users.findActiveById(p.data.sub);
+        // if (!users) { throw new UnauthorizedException('User Not Found'); }
 
-        // return { userId: user.id, name: user.name };
+        // return { userId: users.id, name: users.name };
     }
 }
