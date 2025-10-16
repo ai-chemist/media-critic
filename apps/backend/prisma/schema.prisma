@@ -61,6 +61,7 @@ model Media {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deleted   Boolean  @default(false)
 
   ratings           Rating[]
   RatingAggregation RatingAggregation[]
