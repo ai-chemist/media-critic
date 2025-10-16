@@ -336,6 +336,7 @@
 |   10/13 - 2    |             refreshToken 수정 완료             |     refreshTokenService & authService 수정 완료 -> Controller & Module 수정     |               refreshTokenService 내부에서 private 메서드를 분리 시키는 것이 좋을 지 아니면 파일 내에서 사용하는 것이 좋을 지 고민할 것                ||                                                         ||
 |     10/14      |            AuthModule v1 작성 완료             |                       UserModule 작성 및 추후 진행 중 수정 가능                       ||
 |     10/15      |              UserModule 작성 시작              |||
+|     10/16      |              UserModule 초안 작성              |||
 ---
 
 #### 추가 사항
