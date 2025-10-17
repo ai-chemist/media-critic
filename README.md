@@ -335,9 +335,10 @@
 |     10/13      |             refreshToken Service 수정             |                                                                           |                                                                                                                 |
 |   10/13 - 2    |               refreshToken 수정 완료                |     refreshTokenService & authService 수정 완료 -> Controller & Module 수정     |               refreshTokenService 내부에서 private 메서드를 분리 시키는 것이 좋을 지 아니면 파일 내에서 사용하는 것이 좋을 지 고민할 것                ||                                                         ||
 |     10/14      |               AuthModule v1 작성 완료               |                       UserModule 작성 및 추후 진행 중 수정 가능                       ||
-|     10/15      |                UserModule 작성 시작                 |||
-|     10/16      |                UserModule 초안 작성                 |||
-|   10/16 - 2    | postgresql & prisma 연결 문제 해결 및 UserService 주석처리 |||
+|     10/15      |                UserModule 작성 시작                 |                                                                           ||
+|     10/16      |                UserModule 초안 작성                 |                                                                           ||
+|   10/16 - 2    | postgresql & prisma 연결 문제 해결 및 UserService 주석처리 |                                                                           ||
+|      10/17      |              UsersModule v1 작성 완료               |                            MVP 필수 기능 위주로 작성할 것                            ||
 ---
 
 #### 추가 사항
@@ -357,3 +358,4 @@
 |                 /ratings/rating.service.ts -> findAll() -> WHITELIST 부분 더 나은 이름 찾기                  |                             |                                                                  ||
 |         isFinite() 메서드는 무엇?, prisma를 통해 select 구문을 전달 할 때 mode: 'insentive' 부분이 의미하는 바는 무엇?         |                             |                                                                  ||
 |                                         next.js 구조 다시 확인하기                                          |                             |                                                                  ||
+|                             TokenVersion 증가 방식과 Token Table 관리 방식의 차이점                              ||                                                                  ||

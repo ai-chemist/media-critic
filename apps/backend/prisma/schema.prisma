@@ -19,13 +19,14 @@ enum Role {
 }
 
 model User {
-  id             Int    @id @default(autoincrement())
-  email          String @unique
-  passwordHash   String @db.VarChar(255)
-  name           String @db.VarChar(16)
-  nameNormalized String @db.VarChar(16)
-  tag            String @db.Char(4) // tag 길이를 4자로 고정
-  role           Role   @default(USER)
+  id             Int     @id @default(autoincrement())
+  email          String  @unique
+  passwordHash   String  @db.VarChar(255)
+  name           String  @db.VarChar(16)
+  nameNormalized String  @db.VarChar(16)
+  tag            String  @db.Char(4) // tag 길이를 4자로 고정
+  role           Role    @default(USER)
+  deleted        Boolean @default(false)
 
   imageUrl String? @db.VarChar(255)
 
