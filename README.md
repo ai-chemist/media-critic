@@ -338,7 +338,8 @@
 |     10/15      |                UserModule 작성 시작                 |                                                                           ||
 |     10/16      |                UserModule 초안 작성                 |                                                                           ||
 |   10/16 - 2    | postgresql & prisma 연결 문제 해결 및 UserService 주석처리 |                                                                           ||
-|      10/17      |              UsersModule v1 작성 완료               |                            MVP 필수 기능 위주로 작성할 것                            ||
+|     10/17      |              UsersModule v1 작성 완료               |                            MVP 필수 기능 위주로 작성할 것                            ||
+|      10/18      |           RatingModule 폴더 구조 정의 및 생성            |||
 ---
 
 #### 추가 사항
@@ -358,4 +359,4 @@
 |                 /ratings/rating.service.ts -> findAll() -> WHITELIST 부분 더 나은 이름 찾기                  |                             |                                                                  ||
 |         isFinite() 메서드는 무엇?, prisma를 통해 select 구문을 전달 할 때 mode: 'insentive' 부분이 의미하는 바는 무엇?         |                             |                                                                  ||
 |                                         next.js 구조 다시 확인하기                                          |                             |                                                                  ||
-|                             TokenVersion 증가 방식과 Token Table 관리 방식의 차이점                              ||                                                                  ||
+|                             TokenVersion 증가 방식과 Token Table 관리 방식의 차이점                              |                             |                                                                  ||
