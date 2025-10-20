@@ -339,8 +339,9 @@
 |     10/16      |                UserModule 초안 작성                 |                                                                           ||
 |   10/16 - 2    | postgresql & prisma 연결 문제 해결 및 UserService 주석처리 |                                                                           ||
 |     10/17      |              UsersModule v1 작성 완료               |                            MVP 필수 기능 위주로 작성할 것                            ||
-|     10/18      |           RatingModule 폴더 구조 정의 및 생성            |||
-|     10/19      |                      None                       |||
+|     10/18      |           RatingModule 폴더 구조 정의 및 생성            |                                                                           ||
+|     10/19      |                      None                       |                                                                           ||
+|      10/20      |                  Rating 초안 작성                   |                           전체 완성 후 보완 방식으로 진행할 것                           ||
 ---
 
 #### 추가 사항
